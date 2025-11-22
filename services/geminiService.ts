@@ -1,22 +1,8 @@
-import { GoogleGenAI } from "@google/genai";
 import { ProductCategory } from "../types";
-
-// Safety check for process.env in browser environments
-const getApiKey = () => {
-  try {
-    // @ts-ignore
-    return process.env.API_KEY;
-  } catch (e) {
-    console.warn("process.env.API_KEY is not accessible. AI features will be disabled.");
-    return "";
-  }
-};
-
-// Initialize the AI client
-const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 /**
  * Generates a marketing description for a digital product based on title and category.
+ * Теперь использует backend API для безопасности.
  */
 export const generateProductDescription = async (
   title: string,
@@ -24,35 +10,21 @@ export const generateProductDescription = async (
   features: string
 ): Promise<string> => {
   try {
-    const model = "gemini-2.5-flash";
-    
-    const prompt = `
-      Ты опытный копирайтер для платформы продажи цифровых товаров (аналог Gumroad).
-      Напиши продающее, краткое и структурированное описание на русском языке для продукта.
-      
-      Название: ${title}
-      Категория: ${category}
-      Ключевые особенности (если есть): ${features}
-      
-      Структура ответа:
-      1. Короткий цепляющий заголовок (hook).
-      2. Описание проблемы, которую решает продукт (1-2 предложения).
-      3. Список того, что внутри (буллиты).
-      4. Призыв к действию.
-      
-      Не используй markdown разметку для заголовков (###), используй просто текст и эмодзи.
-    `;
-
-    const response = await ai.models.generateContent({
-      model: model,
-      contents: prompt,
-      config: {
-        temperature: 0.7,
-        maxOutputTokens: 400,
-      }
+    const response = await fetch('/api/gemini/generate-description', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, category, features }),
     });
 
-    return response.text || "Не удалось сгенерировать описание.";
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Ошибка генерации описания');
+    }
+
+    const data = await response.json();
+    return data.description || "Не удалось сгенерировать описание.";
   } catch (error) {
     console.error("Error generating description:", error);
     return "Ошибка при генерации описания. Проверьте API ключ.";
@@ -61,27 +33,25 @@ export const generateProductDescription = async (
 
 /**
  * Suggests a price in RUB based on the product details.
+ * Теперь использует backend API для безопасности.
  */
 export const suggestPrice = async (title: string, category: ProductCategory): Promise<number> => {
   try {
-    const model = "gemini-2.5-flash";
-    const prompt = `
-      Порекомендуй цену в рублях (RUB) для цифрового товара.
-      Название: ${title}
-      Категория: ${category}
-      
-      Ответь ТОЛЬКО числом (например: 1500). Не добавляй текст.
-      Оценивай адекватно рынку цифровых товаров в РФ.
-    `;
-
-    const response = await ai.models.generateContent({
-      model,
-      contents: prompt
+    const response = await fetch('/api/gemini/suggest-price', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, category }),
     });
 
-    const text = response.text?.trim();
-    const price = parseInt(text || "0", 10);
-    return isNaN(price) ? 1000 : price;
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Ошибка генерации цены');
+    }
+
+    const data = await response.json();
+    return data.price || 1000;
   } catch (error) {
     console.error("Error suggesting price:", error);
     return 990; // Fallback price
@@ -90,35 +60,25 @@ export const suggestPrice = async (title: string, category: ProductCategory): Pr
 
 /**
  * Generates a cover image for the product.
+ * Теперь использует backend API для безопасности.
  */
 export const generateCoverImage = async (title: string, category: ProductCategory): Promise<string | null> => {
   try {
-    const model = "gemini-2.5-flash-image";
-    const prompt = `
-      Generate a high-quality, minimalistic, and modern digital art cover image for a digital product named "${title}" in the category "${category}".
-      Style: Abstract, gradient, 3D render, high tech, clean.
-      No text on the image.
-      Aspect Ratio: 4:3.
-    `;
-
-    const response = await ai.models.generateContent({
-      model: model,
-      contents: {
-        parts: [{ text: prompt }]
+    const response = await fetch('/api/gemini/generate-cover', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      config: {
-        imageConfig: {
-          aspectRatio: "4:3",
-        }
-      }
+      body: JSON.stringify({ title, category }),
     });
 
-    for (const part of response.candidates?.[0]?.content?.parts || []) {
-      if (part.inlineData) {
-        return `data:image/png;base64,${part.inlineData.data}`;
-      }
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Ошибка генерации обложки');
     }
-    return null;
+
+    const data = await response.json();
+    return data.imageBase64 || null;
   } catch (error) {
     console.error("Error generating image:", error);
     return null;

@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ShieldCheck, Download, CreditCard, Lock, Loader2, CheckCircle, X, QrCode, Smartphone, FileText, Mail } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import toast from 'react-hot-toast';
 import { Product, UserSettings } from '../types';
 import { CATEGORY_LABELS } from '../constants';
 import { StorageService } from '../services/storage';
 import { pbService } from '../services/pbService';
+import { validateEmail, validatePromoCode } from '../lib/validation';
 
 interface PublicStoreProps {
   product: Product;
@@ -18,6 +20,7 @@ interface PublicStoreProps {
 const PublicStore: React.FC<PublicStoreProps> = ({ product, sellerSettings, onClose }) => {
   const [showCheckout, setShowCheckout] = useState(false);
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [processingState, setProcessingState] = useState<'idle' | 'processing' | 'success'>('idle');
   const [otherProducts, setOtherProducts] = useState<Product[]>([]);
   const [activeModal, setActiveModal] = useState<'privacy' | 'terms' | null>(null);
@@ -72,14 +75,25 @@ const PublicStore: React.FC<PublicStoreProps> = ({ product, sellerSettings, onCl
   const handleApplyPromo = async () => {
     setPromoError('');
     if (!promoCode) return;
+
+    // Валидация формата промокода
+    const validation = validatePromoCode(promoCode);
+    if (!validation.valid) {
+      setPromoError(validation.error || 'Неверный формат промокода');
+      toast.error(validation.error || 'Неверный формат промокода');
+      return;
+    }
     
     try {
       const found = await pbService.promos.getPromoByCode(promoCode.toUpperCase());
       if (found && found.isActive) {
         setAppliedPromo({ code: found.code, percent: found.discountPercent });
+        setPromoError('');
+        toast.success(`Промокод "${found.code}" применен! Скидка ${found.discountPercent}%`);
       } else {
         setPromoError('Промокод не найден или неактивен');
         setAppliedPromo(null);
+        toast.error('Промокод не найден или неактивен');
       }
     } catch {
       // Fallback to localStorage
@@ -87,9 +101,12 @@ const PublicStore: React.FC<PublicStoreProps> = ({ product, sellerSettings, onCl
       const found = allPromos.find(p => p.code === promoCode.toUpperCase() && p.isActive);
       if (found) {
         setAppliedPromo({ code: found.code, percent: found.discountPercent });
+        setPromoError('');
+        toast.success(`Промокод "${found.code}" применен! Скидка ${found.discountPercent}%`);
       } else {
         setPromoError('Промокод не найден или неактивен');
         setAppliedPromo(null);
+        toast.error('Промокод не найден или неактивен');
       }
     }
   };
@@ -121,10 +138,14 @@ ${product.description}
   };
 
   const handlePay = async () => {
-    if (!email.includes('@')) {
-        alert("Пожалуйста, введите корректный Email");
-        return;
+    // Валидация email
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.valid) {
+      setEmailError(emailValidation.error || 'Введите корректный email');
+      toast.error(emailValidation.error || 'Введите корректный email');
+      return;
     }
+    setEmailError(null);
 
     setProcessingState('processing');
 
@@ -150,6 +171,7 @@ ${product.description}
           description: `Покупка: ${product.title}`,
           customerEmail: email,
           userId: userId,
+          promoCode: appliedPromo?.code || null, // Передаем промокод, если применен
         }),
       });
 
@@ -169,13 +191,15 @@ ${product.description}
 
       // Перенаправляем пользователя на страницу оплаты ЮKassa
       if (data.confirmationUrl) {
+        toast.success('Перенаправление на страницу оплаты...');
         window.location.href = data.confirmationUrl;
       } else {
         throw new Error('Не получена ссылка на оплату');
       }
     } catch (error) {
       console.error('Payment error:', error);
-      alert(error instanceof Error ? error.message : 'Ошибка при создании платежа. Попробуйте еще раз.');
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка при создании платежа. Попробуйте еще раз.';
+      toast.error(errorMessage);
       setProcessingState('idle');
     }
   };
@@ -441,10 +465,21 @@ ${product.description}
                               <input 
                                   type="email" 
                                   value={email}
-                                  onChange={(e) => setEmail(e.target.value)}
+                                  onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    if (e.target.value) {
+                                      const validation = validateEmail(e.target.value);
+                                      setEmailError(validation.valid ? null : validation.error || null);
+                                    } else {
+                                      setEmailError(null);
+                                    }
+                                  }}
                                   placeholder="you@email.com"
-                                  className={`w-full bg-zinc-950 border rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-violet-500 outline-none transition-all ${email && !email.includes('@') ? 'border-red-900/50' : 'border-zinc-700'}`}
+                                  className={`w-full bg-zinc-950 border rounded-lg px-4 py-3 text-white focus:ring-2 outline-none transition-all ${emailError ? 'border-red-500/50 focus:ring-red-500' : 'border-zinc-700 focus:ring-violet-500'}`}
                               />
+                              {emailError && (
+                                <p className="text-xs text-red-400 mt-1">{emailError}</p>
+                              )}
                           </div>
 
                            {/* Payment Info */}

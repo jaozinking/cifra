@@ -87,6 +87,19 @@ export async function POST(req: Request) {
               revenue: (product.revenue || 0) + netAmount,
             });
 
+            // 5.5. Увеличиваем счетчик использования промокода, если он был применен
+            if (order.promo) {
+              try {
+                const promo = await pb.collection('promos').getOne(order.promo);
+                await pb.collection('promos').update(order.promo, {
+                  uses: (promo.uses || 0) + 1,
+                });
+                console.log(`✅ Promo code ${promo.code} usage count increased to ${(promo.uses || 0) + 1}`);
+              } catch (promoError) {
+                console.warn('Failed to update promo code usage count:', promoError);
+              }
+            }
+
             // 6. Создаем токен для доступа к файлам (действителен 30 дней)
             const downloadToken = randomBytes(32).toString('hex');
             const expiresAt = new Date();

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, DollarSign, Package, ArrowUpRight, Plus, MousePointerClick, Copy, ExternalLink, RefreshCw, Pencil, Trash2, CheckCircle, Circle, AlertCircle, Wallet, EyeOff } from 'lucide-react';
 import { Product, Sale } from '../types';
@@ -88,7 +89,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onCreateClick, onEditClick, onPro
   const handleWithdraw = async () => {
       const amount = Number(withdrawAmount);
       if (amount <= 0 || amount > availableBalance) {
-          alert("Некорректная сумма");
+          toast.error("Некорректная сумма");
           return;
       }
       setIsWithdrawing(true);
@@ -98,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onCreateClick, onEditClick, onPro
         setShowWithdrawModal(false);
         setWithdrawAmount('');
         fetchData();
-        alert(`Средства (${amount} ₽) успешно отправлены на вашу карту.`);
+        toast.success(`Средства (${amount} ₽) успешно отправлены на вашу карту.`);
       } catch (error) {
         // Fallback to localStorage
           StorageService.requestPayout(amount);
@@ -106,7 +107,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onCreateClick, onEditClick, onPro
           setShowWithdrawModal(false);
           setWithdrawAmount('');
           fetchData();
-          alert(`Средства (${amount} ₽) успешно отправлены на вашу карту.`);
+          toast.success(`Средства (${amount} ₽) успешно отправлены на вашу карту.`);
       }
   };
 
@@ -146,13 +147,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onCreateClick, onEditClick, onPro
   const handleShare = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
     if (product.status === 'draft') {
-        alert('Нельзя поделиться черновиком. Опубликуйте товар, чтобы открыть доступ.');
+        toast.error('Нельзя поделиться черновиком. Опубликуйте товар, чтобы открыть доступ.');
         return;
     }
     const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/product/${product.id}`;
     if (typeof window !== 'undefined' && navigator.clipboard) {
     navigator.clipboard.writeText(url);
-    alert(`Ссылка на магазин скопирована: ${url}`);
+    toast.success('Ссылка на магазин скопирована в буфер обмена!');
     }
   };
 

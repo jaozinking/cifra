@@ -93,8 +93,19 @@ export async function POST(req: Request) {
       );
     }
 
-    // 5. Сохраняем заказ в PocketBase
-    const order = await pb.collection('orders').create({
+    // 5. Находим промокод, если указан
+    let promoId: string | null = null;
+    if (promoCode) {
+      try {
+        const promo = await pb.collection('promos').getFirstListItem(`code = "${promoCode.toUpperCase()}" AND isActive = true`);
+        promoId = promo.id;
+      } catch (e) {
+        console.warn(`Promo code ${promoCode} not found or inactive, proceeding without promo`);
+      }
+    }
+
+    // 6. Сохраняем заказ в PocketBase
+    const orderData: any = {
       user: userId || null,
       product: productId,
       owner: product.owner,
@@ -103,7 +114,14 @@ export async function POST(req: Request) {
       status: 'pending',
       yookassa_payment_id: paymentData.id,
       metadata: paymentData, // Сохраняем весь объект для отладки
-    });
+    };
+
+    // Добавляем промокод, если есть
+    if (promoId) {
+      orderData.promo = promoId;
+    }
+
+    const order = await pb.collection('orders').create(orderData);
 
     // 6. Возвращаем ссылку на оплату фронтенду
     return NextResponse.json({

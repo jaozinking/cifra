@@ -3,7 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   env: {
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    // GEMINI_API_KEY не нужен здесь - используется только на сервере в API routes
     VITE_POCKETBASE_URL: process.env.VITE_POCKETBASE_URL || 'http://127.0.0.1:8090',
     NEXT_PUBLIC_POCKETBASE_URL: process.env.NEXT_PUBLIC_POCKETBASE_URL || process.env.VITE_POCKETBASE_URL || 'http://127.0.0.1:8090',
     YOOKASSA_SHOP_ID: process.env.YOOKASSA_SHOP_ID,

@@ -19,13 +19,37 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       };
     }
 
+    const description = serverProduct.description.substring(0, 160);
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cifra.example.com';
+    
     return {
       title: `${serverProduct.title} | Купить на Cifra`,
-      description: serverProduct.description.substring(0, 160),
+      description,
+      keywords: [serverProduct.title, serverProduct.category, 'цифровой товар', 'купить'],
       openGraph: {
         title: serverProduct.title,
-        description: serverProduct.description.substring(0, 160),
+        description,
+        url: `${siteUrl}/product/${id}`,
+        siteName: 'Cifra',
+        images: serverProduct.coverImage ? [
+          {
+            url: serverProduct.coverImage,
+            width: 1200,
+            height: 630,
+            alt: serverProduct.title,
+          }
+        ] : [],
+        locale: 'ru_RU',
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: serverProduct.title,
+        description,
         images: serverProduct.coverImage ? [serverProduct.coverImage] : [],
+      },
+      alternates: {
+        canonical: `${siteUrl}/product/${id}`,
       },
     };
   } catch {

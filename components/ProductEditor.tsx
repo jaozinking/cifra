@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ArrowLeft, Sparkles, Upload, Save, Loader2, Image as ImageIcon, RefreshCcw, Eye, EyeOff, AlertTriangle } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { Product, ProductCategory } from '../types';
 import { CATEGORY_LABELS } from '../constants';
 import { generateProductDescription, suggestPrice, generateCoverImage } from '../services/geminiService';
 import { StorageService } from '../services/storage';
 import { pbService } from '../services/pbService';
+import { validateProductTitle, validateProductDescription, validatePrice } from '../lib/validation';
 
 interface ProductEditorProps {
   initialProduct?: Product | null;
@@ -29,6 +31,8 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'published' | 'draft'>('published');
   const [saving, setSaving] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string>('');
 
   useEffect(() => {
     if (initialProduct) {
@@ -44,8 +48,9 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
   }, [initialProduct]);
 
   const handleAIInfoHelp = async () => {
-    if (!title) {
-      alert('Пожалуйста, введите название продукта');
+    const titleValidation = validateProductTitle(title);
+    if (!titleValidation.valid) {
+      toast.error(titleValidation.error || 'Введите название продукта');
       return;
     }
     setIsGeneratingInfo(true);
@@ -60,17 +65,19 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
         if (price === '') {
             setPrice(priceResult);
         }
+        toast.success('Описание и цена сгенерированы!');
     } catch (e) {
         console.error(e);
-        alert('Ошибка генерации');
+        toast.error('Ошибка генерации описания. Попробуйте еще раз.');
     }
     setIsGeneratingInfo(false);
   };
 
   const handleAIImageGen = async () => {
-    if (!title) {
-        alert('Пожалуйста, введите название продукта');
-        return;
+    const titleValidation = validateProductTitle(title);
+    if (!titleValidation.valid) {
+      toast.error(titleValidation.error || 'Введите название продукта');
+      return;
     }
     setIsGeneratingImage(true);
     try {
@@ -82,11 +89,12 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
         const blob = await response.blob();
         const file = new File([blob], 'cover.png', { type: 'image/png' });
         setCoverImageFile(file);
+        toast.success('Обложка сгенерирована!');
       } else {
-        alert("Не удалось сгенерировать изображение. Попробуйте снова.");
+        toast.error("Не удалось сгенерировать изображение. Попробуйте снова.");
       }
     } catch (error) {
-      alert("Ошибка при генерации изображения.");
+      toast.error("Ошибка при генерации изображения.");
     }
     setIsGeneratingImage(false);
   };
@@ -102,24 +110,37 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
   const MIN_PRICE = 99;
 
   const handleSave = async () => {
-    const numPrice = Number(price);
-    if (numPrice < MIN_PRICE) {
-        alert(`Минимальная цена товара — ${MIN_PRICE} ₽ (чтобы покрыть комиссии платежных систем)`);
-        return;
+    // Валидация названия
+    const titleValidation = validateProductTitle(title);
+    if (!titleValidation.valid) {
+      toast.error(titleValidation.error || 'Заполните название продукта');
+      return;
     }
 
-    if (!title || !price) {
-      alert('Заполните все обязательные поля');
+    // Валидация описания
+    const descriptionValidation = validateProductDescription(description);
+    if (!descriptionValidation.valid) {
+      toast.error(descriptionValidation.error || 'Заполните описание продукта');
+      return;
+    }
+
+    // Валидация цены
+    const priceValidation = validatePrice(price, MIN_PRICE);
+    if (!priceValidation.valid) {
+      toast.error(priceValidation.error || 'Укажите корректную цену');
       return;
     }
 
     // Проверяем наличие файлов: либо новые загружены, либо уже есть в продукте
     if (uploadedFiles.length === 0 && (!initialProduct || !initialProduct.files || initialProduct.files.length === 0)) {
-      alert('Необходимо загрузить хотя бы один файл продукта');
+      toast.error('Необходимо загрузить хотя бы один файл продукта');
       return;
     }
 
+    const numPrice = Number(price);
+
     setSaving(true);
+    setUploadingFiles(true);
     try {
       // 1. Загружаем файлы в S3 (если есть новые)
       let s3FileKeys: string[] = [];
@@ -127,10 +148,13 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
 
       // Загружаем файлы продукта в S3
       if (uploadedFiles.length > 0) {
-        const uploadPromises = uploadedFiles.map(async (file) => {
+        setUploadProgress(`Загрузка ${uploadedFiles.length} файл(ов)...`);
+        const uploadPromises = uploadedFiles.map(async (file, index) => {
           const formData = new FormData();
           formData.append('file', file);
           formData.append('folder', 'products');
+          
+          setUploadProgress(`Загрузка файла ${index + 1} из ${uploadedFiles.length}: ${file.name}`);
           
           const response = await fetch('/api/upload', {
             method: 'POST',
@@ -138,7 +162,7 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
           });
 
           if (!response.ok) {
-            throw new Error(`Failed to upload ${file.name}`);
+            throw new Error(`Не удалось загрузить ${file.name}`);
           }
 
           const data = await response.json();
@@ -146,6 +170,7 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
         });
 
         s3FileKeys = await Promise.all(uploadPromises);
+        setUploadProgress('Файлы загружены!');
       } else if (initialProduct) {
         // Если редактируем и файлы не менялись, используем существующие
         // Это будет обработано в pbService
@@ -154,6 +179,7 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
 
       // Загружаем обложку в S3 (если есть новая)
       if (coverImageFile) {
+        setUploadProgress('Загрузка обложки...');
         const coverFormData = new FormData();
         coverFormData.append('file', coverImageFile);
         coverFormData.append('folder', 'covers');
@@ -168,6 +194,8 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
           s3CoverImageKey = coverData.fileKey;
         }
       }
+
+      setUploadProgress('Сохранение продукта...');
 
       // 2. Формируем данные продукта
       const productData: Omit<Product, 'id' | 'createdAt'> = {
@@ -204,12 +232,16 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
         );
       }
 
+      toast.success(initialProduct ? 'Продукт обновлен!' : 'Продукт создан!');
       onSave(savedProduct);
     } catch (error) {
       console.error('Failed to save product:', error);
-      alert(error instanceof Error ? error.message : 'Ошибка при сохранении продукта');
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка при сохранении продукта';
+      toast.error(errorMessage);
     } finally {
       setSaving(false);
+      setUploadingFiles(false);
+      setUploadProgress('');
     }
   };
 
@@ -413,15 +445,23 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
                 <div className="h-px bg-zinc-800 my-6"></div>
 
                 <div className="space-y-3">
+                    {uploadProgress && (
+                      <div className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-3 text-xs text-zinc-300">
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="w-3 h-3 animate-spin text-violet-400" />
+                          <span>{uploadProgress}</span>
+                        </div>
+                      </div>
+                    )}
                      <button 
                         onClick={handleSave}
-                        disabled={!title || !price || uploadedFiles.length === 0 || isPriceTooLow || saving}
+                        disabled={saving || uploadingFiles || !title || !price || (uploadedFiles.length === 0 && (!initialProduct || !initialProduct.files || initialProduct.files.length === 0)) || isPriceTooLow}
                         className="w-full flex items-center justify-center gap-2 py-3 bg-white hover:bg-zinc-200 text-black rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {saving ? (
+                        {saving || uploadingFiles ? (
                           <>
                             <Loader2 className="w-4 h-4 animate-spin" />
-                            Сохранение...
+                            {uploadProgress || (initialProduct ? 'Сохранение...' : 'Публикация...')}
                           </>
                         ) : (
                           <>
