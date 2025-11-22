@@ -2,25 +2,24 @@
 
 import { useRouter } from 'next/navigation';
 import PublicStore from '@/components/PublicStore';
-import { Product, UserSettings } from '@/types';
+import type { Product, UserSettings } from '@/types';
 
 export default function PublicStoreClient({
-  product,
-  sellerSettings,
+	product,
+	sellerSettings,
 }: {
-  product: Product;
-  sellerSettings: UserSettings;
+	product: Product;
+	sellerSettings: UserSettings;
 }) {
-  const router = useRouter();
+	const router = useRouter();
 
-  return (
-    <PublicStore
-      product={product}
-      sellerSettings={sellerSettings}
-      onClose={() => {
-        router.push('/');
-      }}
-    />
-  );
+	return (
+		<PublicStore
+			product={product}
+			sellerSettings={sellerSettings}
+			onClose={() => {
+				router.push('/');
+			}}
+		/>
+	);
 }
-

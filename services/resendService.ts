@@ -17,57 +17,57 @@ const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
  * Отправка транзакционного email через Resend
  */
 export async function sendEmail(params: {
-  email: string;
-  subject: string;
-  html: string;
-  from?: string;
-  fromName?: string;
+	email: string;
+	subject: string;
+	html: string;
+	from?: string;
+	fromName?: string;
 }): Promise<{ success: boolean; error?: string; messageId?: string }> {
-  if (!resend) {
-    console.error('RESEND_API_KEY не настроен');
-    return { success: false, error: 'Email service not configured' };
-  }
+	if (!resend) {
+		console.error('RESEND_API_KEY не настроен');
+		return { success: false, error: 'Email service not configured' };
+	}
 
-  try {
-    const fromEmail = params.from || RESEND_SENDER_EMAIL;
-    const fromName = params.fromName || RESEND_SENDER_NAME;
-    const fromAddress = fromName ? `${fromName} <${fromEmail}>` : fromEmail;
+	try {
+		const fromEmail = params.from || RESEND_SENDER_EMAIL;
+		const fromName = params.fromName || RESEND_SENDER_NAME;
+		const fromAddress = fromName ? `${fromName} <${fromEmail}>` : fromEmail;
 
-    const result = await resend.emails.send({
-      from: fromAddress,
-      to: params.email,
-      subject: params.subject,
-      html: params.html,
-    });
+		const result = await resend.emails.send({
+			from: fromAddress,
+			to: params.email,
+			subject: params.subject,
+			html: params.html,
+		});
 
-    if (result.error) {
-      console.error('Resend sendEmail error:', result.error);
-      return { success: false, error: result.error.message || 'Unknown error' };
-    }
+		if (result.error) {
+			console.error('Resend sendEmail error:', result.error);
+			return { success: false, error: result.error.message || 'Unknown error' };
+		}
 
-    return { success: true, messageId: result.data?.id };
-  } catch (error) {
-    console.error('Resend sendEmail exception:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    };
-  }
+		return { success: true, messageId: result.data?.id };
+	} catch (error) {
+		console.error('Resend sendEmail exception:', error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : 'Unknown error',
+		};
+	}
 }
 
 /**
  * Отправка email с ссылкой на скачивание файлов после покупки
  */
 export async function sendPurchaseConfirmationEmail(params: {
-  email: string;
-  productTitle: string;
-  downloadToken: string;
-  downloadUrl: string;
-  amount: number;
-  orderId: string;
+	email: string;
+	productTitle: string;
+	downloadToken: string;
+	downloadUrl: string;
+	amount: number;
+	orderId: string;
 }): Promise<{ success: boolean; error?: string }> {
-  const subject = `Ваша покупка на Cifra: ${params.productTitle}`;
-  const html = `
+	const subject = `Ваша покупка на Cifra: ${params.productTitle}`;
+	const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -116,31 +116,31 @@ export async function sendPurchaseConfirmationEmail(params: {
 </html>
   `;
 
-  const result = await sendEmail({
-    email: params.email,
-    subject,
-    html,
-  });
+	const result = await sendEmail({
+		email: params.email,
+		subject,
+		html,
+	});
 
-  return {
-    success: result.success,
-    error: result.error,
-  };
+	return {
+		success: result.success,
+		error: result.error,
+	};
 }
 
 /**
  * Отправка уведомления продавцу о новой продаже
  */
 export async function sendSaleNotificationEmail(params: {
-  sellerEmail: string;
-  productTitle: string;
-  customerEmail: string;
-  amount: number;
-  netAmount: number;
-  orderId: string;
+	sellerEmail: string;
+	productTitle: string;
+	customerEmail: string;
+	amount: number;
+	netAmount: number;
+	orderId: string;
 }): Promise<{ success: boolean; error?: string }> {
-  const subject = `Новая продажа на Cifra: ${params.productTitle}`;
-  const html = `
+	const subject = `Новая продажа на Cifra: ${params.productTitle}`;
+	const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -184,15 +184,14 @@ export async function sendSaleNotificationEmail(params: {
 </html>
   `;
 
-  const result = await sendEmail({
-    email: params.sellerEmail,
-    subject,
-    html,
-  });
+	const result = await sendEmail({
+		email: params.sellerEmail,
+		subject,
+		html,
+	});
 
-  return {
-    success: result.success,
-    error: result.error,
-  };
+	return {
+		success: result.success,
+		error: result.error,
+	};
 }
-

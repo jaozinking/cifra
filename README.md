@@ -13,6 +13,8 @@
 
 1. **Установите зависимости:**
    ```bash
+   pnpm install
+   # или
    npm install
    ```
 
@@ -64,6 +66,17 @@
    # или
    npm run dev
    ```
+
+## Доступные команды
+
+- `pnpm dev` - Запуск dev-сервера
+- `pnpm build` - Сборка production-версии
+- `pnpm start` - Запуск production-сервера
+- `pnpm lint` - Проверка кода линтером (Biome)
+- `pnpm lint:fix` - Автоматическое исправление ошибок линтера
+- `pnpm format` - Форматирование кода
+- `pnpm type-check` - Проверка типов TypeScript
+- `pnpm full` - Полная проверка: форматирование → линт → проверка типов → сборка
 
    Приложение будет доступно на http://localhost:3000
 
@@ -118,7 +131,17 @@ cifra/
 │   │   ├── marketing/  # Маркетинг и промокоды
 │   │   ├── customers/  # Клиенты
 │   │   └── settings/   # Настройки
+│   ├── api/            # API Routes
+│   │   ├── download/[token]/  # Скачивание файлов по токену
+│   │   ├── files/[fileKey]/   # Проксирование файлов из S3
+│   │   ├── gemini/            # AI-генерация (описания, цены, обложки)
+│   │   ├── payment/create/    # Создание платежа (YooKassa)
+│   │   ├── upload/            # Загрузка файлов в S3
+│   │   ├── yookassa/webhook/  # Webhook для уведомлений о платежах
+│   │   └── test-*             # Тестовые endpoints
 │   ├── auth/           # Авторизация
+│   ├── download/[token]/  # Страница скачивания файлов
+│   ├── payment/        # Страницы успеха/отмены платежа
 │   ├── product/[id]/   # Публичная страница товара (SSR)
 │   ├── layout.tsx      # Root layout
 │   ├── page.tsx        # Главная страница
@@ -136,10 +159,15 @@ cifra/
 ├── constants.ts        # Константы
 ├── pb_migrations/      # Миграции PocketBase
 │   ├── 1734900000_create_cifra_collections.js  # Создание коллекций
-│   └── 1734900100_seed_test_data.js            # Тестовые данные
+│   ├── 1734900100_seed_test_data.js            # Тестовые данные
+│   ├── 1734900200_create_download_tokens_collection.js  # Токены для скачивания
+│   ├── 1734900200_create_orders_collection.js  # Коллекция заказов
+│   ├── 1734900300_add_s3_file_keys_to_products.js  # S3 ключи в продуктах
+│   └── 1734900400_add_promo_to_orders.js       # Промокоды в заказах
 ├── proxy.ts            # Next.js Proxy (аутентификация)
 ├── next.config.ts      # Конфигурация Next.js
 ├── postcss.config.mjs  # PostCSS конфигурация
+├── biome.json          # Конфигурация Biome (линтер и форматтер)
 └── tsconfig.json       # TypeScript конфигурация
 ```
 
@@ -315,9 +343,13 @@ curl -X POST http://localhost:3000/api/test-webhook \
 - Убедитесь, что API ключ правильный
 - Проверьте логи в Resend Dashboard
 
-## Документация
+## Инструменты разработки
 
-- [PocketBase миграции](pb_migrations/README.md)
+Проект использует:
+- **Biome** - для линтинга и форматирования кода (замена ESLint + Prettier)
+- **TypeScript** - строгая типизация
+- **Next.js 16** - React фреймворк с App Router
+- **Tailwind CSS 4** - для стилизации
 
 ## Архитектура
 
@@ -357,6 +389,21 @@ curl -X POST http://localhost:3000/api/test-webhook \
      // Откат (опционально)
    });
    ```
+
+### Проверка кода перед коммитом
+
+Для полной проверки кода перед коммитом используйте:
+```bash
+pnpm full
+```
+
+Эта команда последовательно выполнит:
+1. Форматирование кода (Biome)
+2. Исправление ошибок линтера (Biome)
+3. Проверку типов (TypeScript)
+4. Сборку проекта (Next.js)
+
+Если все проверки пройдут успешно, код готов к коммиту.
 
 ### Сброс тестовых данных
 

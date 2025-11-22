@@ -5,27 +5,27 @@
  */
 
 interface SubscribeParams {
-  email: string;
-  name?: string;
-  listId?: string;
-  doubleOptin?: '0' | '3'; // 0 = с подтверждением, 3 = без подтверждения
+	email: string;
+	name?: string;
+	listId?: string;
+	doubleOptin?: '0' | '3'; // 0 = с подтверждением, 3 = без подтверждения
 }
 
 interface SendEmailParams {
-  email: string;
-  subject: string;
-  html: string;
-  senderName?: string;
-  senderEmail?: string;
-  listId?: string;
+	email: string;
+	subject: string;
+	html: string;
+	senderName?: string;
+	senderEmail?: string;
+	listId?: string;
 }
 
 interface UniSenderResponse {
-  result?: {
-    person_id?: string;
-    [key: string]: unknown;
-  };
-  error?: string;
+	result?: {
+		person_id?: string;
+		[key: string]: unknown;
+	};
+	error?: string;
 }
 
 const UNISENDER_API_KEY = process.env.UNISENDER_API_KEY;
@@ -36,104 +36,108 @@ const UNISENDER_SENDER_NAME = process.env.UNISENDER_SENDER_NAME || 'Cifra';
 /**
  * Подписка на рассылку
  */
-export async function subscribeToNewsletter(params: SubscribeParams): Promise<{ success: boolean; error?: string }> {
-  if (!UNISENDER_API_KEY) {
-    console.error('UNISENDER_API_KEY не настроен');
-    return { success: false, error: 'Email service not configured' };
-  }
+export async function subscribeToNewsletter(
+	params: SubscribeParams
+): Promise<{ success: boolean; error?: string }> {
+	if (!UNISENDER_API_KEY) {
+		console.error('UNISENDER_API_KEY не настроен');
+		return { success: false, error: 'Email service not configured' };
+	}
 
-  try {
-    const urlParams = new URLSearchParams({
-      format: 'json',
-      api_key: UNISENDER_API_KEY,
-      list_ids: params.listId || UNISENDER_LIST_ID,
-      fields: JSON.stringify({
-        email: params.email,
-        ...(params.name && { Name: params.name }),
-      }),
-      double_optin: params.doubleOptin || '3', // 3 = без подтверждения
-      overwrite: '1', // Перезаписать, если существует
-    });
+	try {
+		const urlParams = new URLSearchParams({
+			format: 'json',
+			api_key: UNISENDER_API_KEY,
+			list_ids: params.listId || UNISENDER_LIST_ID,
+			fields: JSON.stringify({
+				email: params.email,
+				...(params.name && { Name: params.name }),
+			}),
+			double_optin: params.doubleOptin || '3', // 3 = без подтверждения
+			overwrite: '1', // Перезаписать, если существует
+		});
 
-    const response = await fetch(`https://api.unisender.com/ru/api/subscribe?${urlParams}`, {
-      method: 'POST',
-    });
+		const response = await fetch(`https://api.unisender.com/ru/api/subscribe?${urlParams}`, {
+			method: 'POST',
+		});
 
-    const data: UniSenderResponse = await response.json();
+		const data: UniSenderResponse = await response.json();
 
-    if (data.error) {
-      console.error('UniSender subscribe error:', data.error);
-      return { success: false, error: data.error };
-    }
+		if (data.error) {
+			console.error('UniSender subscribe error:', data.error);
+			return { success: false, error: data.error };
+		}
 
-    return { success: true };
-  } catch (error) {
-    console.error('UniSender subscribe exception:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
-  }
+		return { success: true };
+	} catch (error) {
+		console.error('UniSender subscribe exception:', error);
+		return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+	}
 }
 
 /**
  * Отправка транзакционного email
  */
-export async function sendEmail(params: SendEmailParams): Promise<{ success: boolean; error?: string; messageId?: string }> {
-  if (!UNISENDER_API_KEY) {
-    console.error('UNISENDER_API_KEY не настроен');
-    return { success: false, error: 'Email service not configured' };
-  }
+export async function sendEmail(
+	params: SendEmailParams
+): Promise<{ success: boolean; error?: string; messageId?: string }> {
+	if (!UNISENDER_API_KEY) {
+		console.error('UNISENDER_API_KEY не настроен');
+		return { success: false, error: 'Email service not configured' };
+	}
 
-  try {
-    // UniSender sendEmail API для транзакционных писем
-    // Используем POST с параметрами в теле запроса
-    // Параметры: api_key, email, sender_name, sender_email, subject, body (не body_html!)
-    const formData = new URLSearchParams();
-    formData.append('api_key', UNISENDER_API_KEY || '');
-    formData.append('email', params.email);
-    formData.append('sender_name', params.senderName || UNISENDER_SENDER_NAME || 'Cifra');
-    formData.append('sender_email', params.senderEmail || UNISENDER_SENDER_EMAIL || '');
-    formData.append('subject', params.subject);
-    formData.append('body', params.html); // Используем 'body', не 'body_html'!
+	try {
+		// UniSender sendEmail API для транзакционных писем
+		// Используем POST с параметрами в теле запроса
+		// Параметры: api_key, email, sender_name, sender_email, subject, body (не body_html!)
+		const formData = new URLSearchParams();
+		formData.append('api_key', UNISENDER_API_KEY || '');
+		formData.append('email', params.email);
+		formData.append('sender_name', params.senderName || UNISENDER_SENDER_NAME || 'Cifra');
+		formData.append('sender_email', params.senderEmail || UNISENDER_SENDER_EMAIL || '');
+		formData.append('subject', params.subject);
+		formData.append('body', params.html); // Используем 'body', не 'body_html'!
 
-    // Примечание: sendEmail - это метод для одиночных транзакционных писем
-    // Он НЕ принимает list_id и другие параметры массовых рассылок
+		// Примечание: sendEmail - это метод для одиночных транзакционных писем
+		// Он НЕ принимает list_id и другие параметры массовых рассылок
 
-    const response = await fetch('https://api.unisender.com/ru/api/sendEmail', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
-    });
+		const response = await fetch('https://api.unisender.com/ru/api/sendEmail', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: formData.toString(),
+		});
 
-    const data: UniSenderResponse = await response.json();
+		const data: UniSenderResponse = await response.json();
 
-    if (data.error) {
-      console.error('UniSender sendEmail error:', data.error);
-      return { success: false, error: data.error };
-    }
+		if (data.error) {
+			console.error('UniSender sendEmail error:', data.error);
+			return { success: false, error: data.error };
+		}
 
-    return { success: true, messageId: data.result?.person_id as string | undefined };
-  } catch (error) {
-    console.error('UniSender sendEmail exception:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
-  }
+		return { success: true, messageId: data.result?.person_id as string | undefined };
+	} catch (error) {
+		console.error('UniSender sendEmail exception:', error);
+		return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+	}
 }
 
 /**
  * Отправка email с ссылкой на скачивание файлов после покупки
  */
 export async function sendPurchaseConfirmationEmail(params: {
-  email: string;
-  productTitle: string;
-  downloadToken: string;
-  downloadUrl: string;
-  amount: number;
-  orderId: string;
+	email: string;
+	productTitle: string;
+	downloadToken: string;
+	downloadUrl: string;
+	amount: number;
+	orderId: string;
 }): Promise<{ success: boolean; error?: string }> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-  const downloadLink = `${siteUrl}/download/${params.downloadToken}`;
+	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+	const downloadLink = `${siteUrl}/download/${params.downloadToken}`;
 
-  const html = `
+	const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -185,25 +189,25 @@ export async function sendPurchaseConfirmationEmail(params: {
 </html>
   `;
 
-  return sendEmail({
-    email: params.email,
-    subject: `Ваш заказ #${params.orderId} готов к скачиванию`,
-    html,
-  });
+	return sendEmail({
+		email: params.email,
+		subject: `Ваш заказ #${params.orderId} готов к скачиванию`,
+		html,
+	});
 }
 
 /**
  * Отправка уведомления продавцу о новой продаже
  */
 export async function sendSaleNotificationEmail(params: {
-  sellerEmail: string;
-  productTitle: string;
-  customerEmail: string;
-  amount: number;
-  netAmount: number;
-  orderId: string;
+	sellerEmail: string;
+	productTitle: string;
+	customerEmail: string;
+	amount: number;
+	netAmount: number;
+	orderId: string;
 }): Promise<{ success: boolean; error?: string }> {
-  const html = `
+	const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -260,10 +264,9 @@ export async function sendSaleNotificationEmail(params: {
 </html>
   `;
 
-  return sendEmail({
-    email: params.sellerEmail,
-    subject: `Новая продажа: ${params.productTitle}`,
-    html,
-  });
+	return sendEmail({
+		email: params.sellerEmail,
+		subject: `Новая продажа: ${params.productTitle}`,
+		html,
+	});
 }
-
