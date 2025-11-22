@@ -14,13 +14,10 @@ export default function PaymentSuccessPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const paymentId = searchParams.get('payment_id');
-    
-    if (!paymentId) {
-      setError('Не найден ID платежа');
-      setLoading(false);
-      return;
-    }
+    // ЮKassa не передает параметры в return_url автоматически
+    // Используем sessionStorage для получения данных о заказе (если есть)
+    const paymentId = searchParams.get('payment_id') || sessionStorage.getItem('lastPaymentId');
+    const orderId = sessionStorage.getItem('lastOrderId');
 
     // Запускаем конфетти
     confetti({
@@ -36,15 +33,24 @@ export default function PaymentSuccessPage() {
         // Ждем немного, чтобы webhook успел обработаться
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // В реальном приложении здесь можно сделать запрос к API для проверки статуса
-        // Пока просто показываем успех
+        // Очищаем sessionStorage после использования
+        if (orderId) {
+          sessionStorage.removeItem('lastOrderId');
+        }
+        if (paymentId) {
+          sessionStorage.removeItem('lastPaymentId');
+        }
+        
         setLoading(false);
       } catch (err) {
         console.error('Error checking order:', err);
+        // Не показываем ошибку пользователю, просто скрываем загрузку
         setLoading(false);
       }
     };
 
+    // Запускаем проверку независимо от наличия paymentId
+    // ЮKassa может не передавать его в URL - это нормально
     checkOrder();
   }, [searchParams]);
 

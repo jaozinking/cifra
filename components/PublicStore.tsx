@@ -159,6 +159,14 @@ ${product.description}
         throw new Error(data.error || 'Ошибка создания платежа');
       }
 
+      // Сохраняем orderId и paymentId в sessionStorage для использования на странице success
+      if (data.orderId) {
+        sessionStorage.setItem('lastOrderId', data.orderId);
+      }
+      if (data.paymentId) {
+        sessionStorage.setItem('lastPaymentId', data.paymentId);
+      }
+
       // Перенаправляем пользователя на страницу оплаты ЮKassa
       if (data.confirmationUrl) {
         window.location.href = data.confirmationUrl;

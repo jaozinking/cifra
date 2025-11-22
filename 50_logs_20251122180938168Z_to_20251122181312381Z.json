@@ -1,0 +1,884 @@
+[
+  {
+    "id": "197frfebfyluk8p",
+    "created": "2025-11-22 18:13:12.381Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "http://127.0.0.1:8090/_/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/pbc_3527180448/records?page=1&perPage=1&filter=&fields=id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/pbc_3527180448/records?page=1&perPage=1&filter=&fields=id",
+    "level": 0
+  },
+  {
+    "id": "zlc06hfu7igqp1s",
+    "created": "2025-11-22 18:13:12.380Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 1.0432,
+      "method": "GET",
+      "referer": "http://127.0.0.1:8090/_/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/pbc_3527180448/records?page=1&perPage=40&sort=-%40rowid&skipTotal=1&filter=&expand=user%2Cproduct%2Cowner&fields=*%2Cexpand.user.*%3Aexcerpt(200)%2Cexpand.product.*%3Aexcerpt(200)%2Cexpand.owner.*%3Aexcerpt(200)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/pbc_3527180448/records?page=1&perPage=40&sort=-@rowid&skipTotal=1&filter=&expand=user,product,owner&fields=*,expand.user.*:excerpt(200),expand.product.*:excerpt(200),expand.owner.*:excerpt(200)",
+    "level": 0
+  },
+  {
+    "id": "ov3yok8ezvg3rdc",
+    "created": "2025-11-22 18:13:10.804Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 0.5907,
+      "method": "GET",
+      "referer": "http://127.0.0.1:8090/_/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/_pb_users_auth_/records?page=1&perPage=1&filter=&fields=id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/_pb_users_auth_/records?page=1&perPage=1&filter=&fields=id",
+    "level": 0
+  },
+  {
+    "id": "72sqxlkmli7i5k4",
+    "created": "2025-11-22 18:13:10.804Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 0.5815,
+      "method": "GET",
+      "referer": "http://127.0.0.1:8090/_/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/_pb_users_auth_/records?page=1&perPage=40&sort=-%40rowid&skipTotal=1&filter=&expand=&fields=",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/_pb_users_auth_/records?page=1&perPage=40&sort=-@rowid&skipTotal=1&filter=&expand=&fields=",
+    "level": 0
+  },
+  {
+    "id": "ve2se4qwiqtww26",
+    "created": "2025-11-22 18:13:10.782Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 2.8938,
+      "method": "GET",
+      "referer": "http://127.0.0.1:8090/_/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections?page=1&perPage=500&skipTotal=1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections?page=1&perPage=500&skipTotal=1",
+    "level": 0
+  },
+  {
+    "id": "oljtlw2ww5u2m2n",
+    "created": "2025-11-22 18:13:10.781Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 0.5298,
+      "method": "GET",
+      "referer": "http://127.0.0.1:8090/_/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/_pb_users_auth_/records?page=1&perPage=1&filter=&fields=id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/_pb_users_auth_/records?page=1&perPage=1&filter=&fields=id",
+    "level": 0
+  },
+  {
+    "id": "owcqwgnev7p8e4h",
+    "created": "2025-11-22 18:13:10.778Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 1.0861,
+      "method": "GET",
+      "referer": "http://127.0.0.1:8090/_/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/meta/scaffolds",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/meta/scaffolds",
+    "level": 0
+  },
+  {
+    "id": "1w3uad2ljv5zbi8",
+    "created": "2025-11-22 18:13:03.820Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.0012,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/payouts/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/payouts/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "4y9ay4tginsyhey",
+    "created": "2025-11-22 18:13:03.819Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.0001,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  },
+  {
+    "id": "mknwt7uto836n27",
+    "created": "2025-11-22 18:13:03.819Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.0001,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/payouts/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/payouts/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "epcdett9jtw5b4k",
+    "created": "2025-11-22 18:13:03.818Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  },
+  {
+    "id": "5lop5rzcz6wxgsn",
+    "created": "2025-11-22 18:13:03.817Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/gx76jvf0x1atn7p",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/gx76jvf0x1atn7p",
+    "level": 0
+  },
+  {
+    "id": "jq9w7n5kywu9yxr",
+    "created": "2025-11-22 18:13:03.817Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/fobmper8v0e9nmf",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/fobmper8v0e9nmf",
+    "level": 0
+  },
+  {
+    "id": "3cds2ev9454dlou",
+    "created": "2025-11-22 18:13:03.817Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.9999,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  },
+  {
+    "id": "vpsf6wp5n5pe3gt",
+    "created": "2025-11-22 18:13:03.817Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.9999,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ebswhi4nxe7o3kl",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ebswhi4nxe7o3kl",
+    "level": 0
+  },
+  {
+    "id": "irsr04nnhb7nfc1",
+    "created": "2025-11-22 18:13:03.817Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.9999,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ebswhi4nxe7o3kl",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ebswhi4nxe7o3kl",
+    "level": 0
+  },
+  {
+    "id": "8798eqem0brz03h",
+    "created": "2025-11-22 18:13:03.815Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  },
+  {
+    "id": "4511pp3b8u9fp7j",
+    "created": "2025-11-22 18:13:03.815Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.9993,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/gx76jvf0x1atn7p",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/gx76jvf0x1atn7p",
+    "level": 0
+  },
+  {
+    "id": "2q4mpvpbuxcdx9r",
+    "created": "2025-11-22 18:13:03.815Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.9993,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ebswhi4nxe7o3kl",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ebswhi4nxe7o3kl",
+    "level": 0
+  },
+  {
+    "id": "3gf8urwux6ceyml",
+    "created": "2025-11-22 18:13:03.814Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.0003,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/fobmper8v0e9nmf",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/fobmper8v0e9nmf",
+    "level": 0
+  },
+  {
+    "id": "6w2gr1yynv5n0k3",
+    "created": "2025-11-22 18:13:03.813Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.0014,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ebswhi4nxe7o3kl",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ebswhi4nxe7o3kl",
+    "level": 0
+  },
+  {
+    "id": "f2mj5lyxjnkatj8",
+    "created": "2025-11-22 18:13:03.806Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.9993,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "t2v1ud1apvp7uwt",
+    "created": "2025-11-22 18:13:03.805Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "pg99qqbeux8ipjb",
+    "created": "2025-11-22 18:13:03.804Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.0006,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "2jyiih2i55pavww",
+    "created": "2025-11-22 18:13:03.803Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.9999,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/sales/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/sales/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "8smxi2dv7aqgp8d",
+    "created": "2025-11-22 18:13:03.802Z",
+    "data": {
+      "auth": "users",
+      "execTime": 13.3157,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "05ynq0htm9wv122",
+    "created": "2025-11-22 18:13:03.802Z",
+    "data": {
+      "auth": "users",
+      "execTime": 11.6096,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/sales/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/sales/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "t8cwt9cb1e2zjt0",
+    "created": "2025-11-22 18:13:03.789Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.513,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/users/records/yysrpgrn0o1jx2y",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/users/records/yysrpgrn0o1jx2y",
+    "level": 0
+  },
+  {
+    "id": "o95lzcpls8boeaq",
+    "created": "2025-11-22 18:13:03.788Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/users/records/yysrpgrn0o1jx2y",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/users/records/yysrpgrn0o1jx2y",
+    "level": 0
+  },
+  {
+    "id": "58oootn259zd530",
+    "created": "2025-11-22 18:13:03.746Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.062,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/users/records/yysrpgrn0o1jx2y",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/users/records/yysrpgrn0o1jx2y",
+    "level": 0
+  },
+  {
+    "id": "ymgdo7f2kzqrqv2",
+    "created": "2025-11-22 18:13:03.745Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.0003,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/users/records/yysrpgrn0o1jx2y",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/users/records/yysrpgrn0o1jx2y",
+    "level": 0
+  },
+  {
+    "id": "8l528ldzo970ees",
+    "created": "2025-11-22 18:13:03.676Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/users/records/yysrpgrn0o1jx2y",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/users/records/yysrpgrn0o1jx2y",
+    "level": 0
+  },
+  {
+    "id": "w37tca2f47tnn3w",
+    "created": "2025-11-22 18:13:03.676Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.9119,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/users/records/yysrpgrn0o1jx2y",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/users/records/yysrpgrn0o1jx2y",
+    "level": 0
+  },
+  {
+    "id": "o5wfban80tp1ex8",
+    "created": "2025-11-22 18:12:49.905Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 0.9994,
+      "method": "PATCH",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "PATCH /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  },
+  {
+    "id": "x6iohz8wp4bhlfc",
+    "created": "2025-11-22 18:12:49.903Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 0,
+      "method": "POST",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/sales/records",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "POST /api/collections/sales/records",
+    "level": 0
+  },
+  {
+    "id": "f2szi08opialggs",
+    "created": "2025-11-22 18:12:49.902Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  },
+  {
+    "id": "cyddlf6wpl15se6",
+    "created": "2025-11-22 18:12:49.901Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 1.0005,
+      "method": "PATCH",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/orders/records/753s5vlwkfhs91u",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "PATCH /api/collections/orders/records/753s5vlwkfhs91u",
+    "level": 0
+  },
+  {
+    "id": "uyfghsxtl5hbc59",
+    "created": "2025-11-22 18:12:49.899Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/orders/records?page=1&perPage=1&filter=yookassa_payment_id%3D%2230b41042-000f-5001-8000-19a8e3b9464c%22&skipTotal=1",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/orders/records?page=1&perPage=1&filter=yookassa_payment_id=\"30b41042-000f-5001-8000-19a8e3b9464c\"&skipTotal=1",
+    "level": 0
+  },
+  {
+    "id": "0ve7xmjsej4uthl",
+    "created": "2025-11-22 18:12:49.896Z",
+    "data": {
+      "auth": "",
+      "execTime": 64.9224,
+      "method": "POST",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/_superusers/auth-with-password",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "POST /api/collections/_superusers/auth-with-password",
+    "level": 0
+  },
+  {
+    "id": "uc056ucx6raw0bj",
+    "created": "2025-11-22 18:12:49.896Z",
+    "data": {
+      "error": "failed to locate a sendmail executable path"
+    },
+    "message": "[recordAuthResponse] Failed to send login alert",
+    "level": 4
+  },
+  {
+    "id": "svlgzxfkttec798",
+    "created": "2025-11-22 18:10:09.954Z",
+    "data": {
+      "auth": "_superusers",
+      "execTime": 5.2192,
+      "method": "POST",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/orders/records",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "POST /api/collections/orders/records",
+    "level": 0
+  },
+  {
+    "id": "wid52p7t3k6yky8",
+    "created": "2025-11-22 18:10:09.216Z",
+    "data": {
+      "auth": "",
+      "execTime": 61.7285,
+      "method": "POST",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/_superusers/auth-with-password",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "POST /api/collections/_superusers/auth-with-password",
+    "level": 0
+  },
+  {
+    "id": "5cbjf4e7qvy986x",
+    "created": "2025-11-22 18:10:09.216Z",
+    "data": {
+      "error": "failed to locate a sendmail executable path"
+    },
+    "message": "[recordAuthResponse] Failed to send login alert",
+    "level": 4
+  },
+  {
+    "id": "gel6ampa6i727iz",
+    "created": "2025-11-22 18:10:09.151Z",
+    "data": {
+      "auth": "",
+      "execTime": 0.5203,
+      "method": "GET",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  },
+  {
+    "id": "zrbxvxir58pf5av",
+    "created": "2025-11-22 18:10:09.061Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/users/records/yysrpgrn0o1jx2y",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/users/records/yysrpgrn0o1jx2y",
+    "level": 0
+  },
+  {
+    "id": "57opndsobmpyfh8",
+    "created": "2025-11-22 18:09:42.172Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.8567,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "tzeq06mxgz3cvx0",
+    "created": "2025-11-22 18:09:42.168Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.0567,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "4j1q97786kstu8y",
+    "created": "2025-11-22 18:09:42.093Z",
+    "data": {
+      "auth": "",
+      "execTime": 0.7319,
+      "method": "GET",
+      "referer": "",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "node",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  },
+  {
+    "id": "fprbqbiko543wfs",
+    "created": "2025-11-22 18:09:38.170Z",
+    "data": {
+      "auth": "users",
+      "execTime": 1.1238,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/payouts/records?page=1&perPage=500&sort=-id",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/payouts/records?page=1&perPage=500&sort=-id",
+    "level": 0
+  },
+  {
+    "id": "r6en66utnytnzoq",
+    "created": "2025-11-22 18:09:38.168Z",
+    "data": {
+      "auth": "users",
+      "execTime": 0.5227,
+      "method": "GET",
+      "referer": "http://localhost:3000/",
+      "remoteIP": "127.0.0.1",
+      "status": 200,
+      "type": "request",
+      "url": "/api/collections/products/records/ssqzzs7mdtzvqay",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "userIP": "127.0.0.1"
+    },
+    "message": "GET /api/collections/products/records/ssqzzs7mdtzvqay",
+    "level": 0
+  }
+]
