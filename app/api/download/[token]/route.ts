@@ -45,7 +45,10 @@ export async function GET(
     // Получаем продукт и файлы
     const product = await pb.collection('products').getOne(downloadToken.product);
 
-    if (!product.productFiles || product.productFiles.length === 0) {
+    // Определяем источник файлов: приоритет S3, затем PocketBase (для обратной совместимости)
+    const fileKeys = product.s3FileKeys || product.productFiles || [];
+
+    if (fileKeys.length === 0) {
       return NextResponse.json(
         { error: 'No files available for this product' },
         { status: 404 }
@@ -57,13 +60,23 @@ export async function GET(
       downloadCount: (downloadToken.downloadCount || 0) + 1,
     });
 
-    // Если один файл - возвращаем его напрямую
-    // Если несколько - возвращаем ZIP (упрощенная версия - возвращаем первый файл)
-    // В production лучше использовать библиотеку для создания ZIP
-    const fileUrl = `${PB_URL}/api/files/${product.collectionId}/${product.id}/${product.productFiles[0]}`;
+    // Если файлы в S3, используем S3 API route
+    if (product.s3FileKeys && product.s3FileKeys.length > 0) {
+      const firstFileKey = product.s3FileKeys[0];
+      // Перенаправляем на API route, который сгенерирует pre-signed URL
+      return NextResponse.redirect(`/api/files/${encodeURIComponent(firstFileKey)}`);
+    }
 
-    // Перенаправляем на файл в PocketBase
-    return NextResponse.redirect(fileUrl);
+    // Обратная совместимость: если файлы в PocketBase
+    if (product.productFiles && product.productFiles.length > 0) {
+      const fileUrl = `${PB_URL}/api/files/${product.collectionId}/${product.id}/${product.productFiles[0]}`;
+      return NextResponse.redirect(fileUrl);
+    }
+
+    return NextResponse.json(
+      { error: 'No files available for this product' },
+      { status: 404 }
+    );
   } catch (error: any) {
     console.error('Download error:', error);
 

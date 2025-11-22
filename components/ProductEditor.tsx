@@ -108,13 +108,68 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
         return;
     }
 
-    if (!title || !price || uploadedFiles.length === 0) {
+    if (!title || !price) {
       alert('Заполните все обязательные поля');
+      return;
+    }
+
+    // Проверяем наличие файлов: либо новые загружены, либо уже есть в продукте
+    if (uploadedFiles.length === 0 && (!initialProduct || !initialProduct.files || initialProduct.files.length === 0)) {
+      alert('Необходимо загрузить хотя бы один файл продукта');
       return;
     }
 
     setSaving(true);
     try {
+      // 1. Загружаем файлы в S3 (если есть новые)
+      let s3FileKeys: string[] = [];
+      let s3CoverImageKey: string | null = null;
+
+      // Загружаем файлы продукта в S3
+      if (uploadedFiles.length > 0) {
+        const uploadPromises = uploadedFiles.map(async (file) => {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('folder', 'products');
+          
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`Failed to upload ${file.name}`);
+          }
+
+          const data = await response.json();
+          return data.fileKey;
+        });
+
+        s3FileKeys = await Promise.all(uploadPromises);
+      } else if (initialProduct) {
+        // Если редактируем и файлы не менялись, используем существующие
+        // Это будет обработано в pbService
+        s3FileKeys = initialProduct.files || [];
+      }
+
+      // Загружаем обложку в S3 (если есть новая)
+      if (coverImageFile) {
+        const coverFormData = new FormData();
+        coverFormData.append('file', coverImageFile);
+        coverFormData.append('folder', 'covers');
+        
+        const coverResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: coverFormData,
+        });
+
+        if (coverResponse.ok) {
+          const coverData = await coverResponse.json();
+          s3CoverImageKey = coverData.fileKey;
+        }
+      }
+
+      // 2. Формируем данные продукта
       const productData: Omit<Product, 'id' | 'createdAt'> = {
         title,
         description,
@@ -124,45 +179,35 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ initialProduct, onBack, o
         sales: initialProduct ? initialProduct.sales : 0,
         revenue: initialProduct ? initialProduct.revenue : 0,
         status: status,
-        files: uploadedFiles.map(f => f.name)
+        files: s3FileKeys // Теперь это S3 ключи, а не имена файлов
       };
 
+      // 3. Сохраняем в PocketBase с S3 ключами
       let savedProduct: Product;
       
       if (initialProduct) {
         savedProduct = await pbService.products.updateProduct(
           initialProduct.id,
           productData,
-          coverImageFile || undefined,
-          uploadedFiles.length > 0 ? uploadedFiles : undefined
+          undefined, // Не передаем файлы, так как они уже в S3
+          undefined,
+          s3FileKeys.length > 0 ? s3FileKeys : undefined,
+          s3CoverImageKey || undefined
         );
       } else {
         savedProduct = await pbService.products.createProduct(
           productData,
-          coverImageFile || undefined,
-          uploadedFiles.length > 0 ? uploadedFiles : undefined
+          undefined, // Не передаем файлы, так как они уже в S3
+          undefined,
+          s3FileKeys,
+          s3CoverImageKey || undefined
         );
       }
 
       onSave(savedProduct);
     } catch (error) {
-      console.error('Failed to save to PocketBase, using localStorage:', error);
-      // Fallback to localStorage
-      const productData: Product = {
-        id: initialProduct ? initialProduct.id : Date.now().toString(),
-        title,
-        description,
-        category,
-        priceRub: numPrice,
-        coverImage: coverImage || `https://picsum.photos/800/600?random=${Date.now()}`,
-        sales: initialProduct ? initialProduct.sales : 0,
-        revenue: initialProduct ? initialProduct.revenue : 0,
-        status: status,
-        files: uploadedFiles.map(f => f.name),
-        createdAt: initialProduct ? initialProduct.createdAt : Date.now()
-      };
-      StorageService.saveProduct(productData);
-      onSave(productData);
+      console.error('Failed to save product:', error);
+      alert(error instanceof Error ? error.message : 'Ошибка при сохранении продукта');
     } finally {
       setSaving(false);
     }

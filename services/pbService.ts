@@ -18,7 +18,9 @@ export interface PBProduct extends RecordModel {
   priceRub: number;
   category: ProductCategory;
   coverImage?: string;
-  productFiles?: string[];
+  productFiles?: string[]; // Старые файлы PocketBase (для обратной совместимости)
+  s3FileKeys?: string[]; // S3 ключи файлов продуктов
+  s3CoverImageKey?: string; // S3 ключ обложки
   sales: number;
   revenue: number;
   status: 'published' | 'draft';
@@ -58,17 +60,30 @@ export interface PBPayout extends RecordModel {
 
 // Helper to convert PBProduct to Product
 const pbProductToProduct = (pbProduct: PBProduct): Product => {
+  // Определяем источник файлов: приоритет S3, затем PocketBase
+  const fileKeys = pbProduct.s3FileKeys || pbProduct.productFiles || [];
+  
+  // Определяем обложку: приоритет S3, затем PocketBase
+  let coverImageUrl = '';
+  if (pbProduct.s3CoverImageKey) {
+    // Для S3 обложки используем API route для получения pre-signed URL
+    coverImageUrl = `/api/files/${encodeURIComponent(pbProduct.s3CoverImageKey)}`;
+  } else if (pbProduct.coverImage) {
+    // Старая обложка из PocketBase
+    coverImageUrl = pb.files.getURL(pbProduct, pbProduct.coverImage);
+  }
+
   return {
     id: pbProduct.id,
     title: pbProduct.title,
     description: pbProduct.description,
     priceRub: pbProduct.priceRub,
     category: pbProduct.category,
-    coverImage: pbProduct.coverImage ? pb.files.getURL(pbProduct, pbProduct.coverImage) : '',
+    coverImage: coverImageUrl,
     sales: pbProduct.sales || 0,
     revenue: pbProduct.revenue || 0,
     status: pbProduct.status,
-    files: pbProduct.productFiles || [],
+    files: fileKeys, // Теперь это S3 ключи или старые имена файлов
     createdAt: new Date(pbProduct.created).getTime()
   };
 };
@@ -169,7 +184,13 @@ export const productService = {
     }
   },
 
-  async createProduct(productData: Omit<Product, 'id' | 'createdAt'>, coverImageFile?: File, productFiles?: File[]): Promise<Product> {
+  async createProduct(
+    productData: Omit<Product, 'id' | 'createdAt'>, 
+    coverImageFile?: File, 
+    productFiles?: File[],
+    s3FileKeys?: string[],
+    s3CoverImageKey?: string
+  ): Promise<Product> {
     const formData = new FormData();
     formData.append('title', productData.title);
     formData.append('description', productData.description);
@@ -180,11 +201,22 @@ export const productService = {
     formData.append('revenue', (productData.revenue || 0).toString());
     formData.append('owner', pb.authStore.model?.id || '');
 
-    if (coverImageFile) {
+    // Если есть S3 ключи, сохраняем их
+    if (s3FileKeys && s3FileKeys.length > 0) {
+      formData.append('s3FileKeys', JSON.stringify(s3FileKeys));
+    }
+
+    if (s3CoverImageKey) {
+      formData.append('s3CoverImageKey', s3CoverImageKey);
+    }
+
+    // Обратная совместимость: если файлы переданы напрямую, загружаем в PocketBase
+    // (но лучше использовать S3)
+    if (coverImageFile && !s3CoverImageKey) {
       formData.append('coverImage', coverImageFile);
     }
 
-    if (productFiles && productFiles.length > 0) {
+    if (productFiles && productFiles.length > 0 && (!s3FileKeys || s3FileKeys.length === 0)) {
       productFiles.forEach(file => {
         formData.append('productFiles', file);
       });
@@ -194,7 +226,14 @@ export const productService = {
     return pbProductToProduct(record);
   },
 
-  async updateProduct(id: string, productData: Partial<Product>, coverImageFile?: File, productFiles?: File[]): Promise<Product> {
+  async updateProduct(
+    id: string, 
+    productData: Partial<Product>, 
+    coverImageFile?: File, 
+    productFiles?: File[],
+    s3FileKeys?: string[],
+    s3CoverImageKey?: string
+  ): Promise<Product> {
     const formData = new FormData();
     
     if (productData.title !== undefined) formData.append('title', productData.title);
@@ -205,11 +244,21 @@ export const productService = {
     if (productData.sales !== undefined) formData.append('sales', productData.sales.toString());
     if (productData.revenue !== undefined) formData.append('revenue', productData.revenue.toString());
 
-    if (coverImageFile) {
+    // Если есть S3 ключи, обновляем их
+    if (s3FileKeys !== undefined) {
+      formData.append('s3FileKeys', JSON.stringify(s3FileKeys));
+    }
+
+    if (s3CoverImageKey !== undefined) {
+      formData.append('s3CoverImageKey', s3CoverImageKey);
+    }
+
+    // Обратная совместимость: если файлы переданы напрямую, загружаем в PocketBase
+    if (coverImageFile && !s3CoverImageKey) {
       formData.append('coverImage', coverImageFile);
     }
 
-    if (productFiles && productFiles.length > 0) {
+    if (productFiles && productFiles.length > 0 && (!s3FileKeys || s3FileKeys.length === 0)) {
       productFiles.forEach(file => {
         formData.append('productFiles', file);
       });

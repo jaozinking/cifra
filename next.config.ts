@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     RESEND_SENDER_EMAIL: process.env.RESEND_SENDER_EMAIL,
     RESEND_SENDER_NAME: process.env.RESEND_SENDER_NAME,
+    // Yandex S3
+    YANDEX_ACCESS_KEY_ID: process.env.YANDEX_ACCESS_KEY_ID,
+    YANDEX_SECRET_ACCESS_KEY: process.env.YANDEX_SECRET_ACCESS_KEY,
+    YANDEX_REGION: process.env.YANDEX_REGION,
+    YANDEX_BUCKET_NAME: process.env.YANDEX_BUCKET_NAME,
   },
   images: {
     remotePatterns: [

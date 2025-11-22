@@ -37,17 +37,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 // Helper to convert server product to client Product type
 function serverProductToProduct(serverProduct: any): Product {
+  // Определяем файлы: приоритет S3, затем PocketBase
+  const fileKeys = serverProduct.s3FileKeys || serverProduct.productFiles || [];
+  
   return {
     id: serverProduct.id,
     title: serverProduct.title,
     description: serverProduct.description,
     priceRub: serverProduct.priceRub,
     category: serverProduct.category,
-    coverImage: serverProduct.coverImage || '',
+    coverImage: serverProduct.coverImage || '', // Уже обработан в getPublicProduct
     sales: serverProduct.sales || 0,
     revenue: serverProduct.revenue || 0,
     status: serverProduct.status,
-    files: serverProduct.productFiles || [],
+    files: fileKeys, // S3 ключи или старые имена файлов
     createdAt: new Date(serverProduct.created).getTime(),
   };
 }

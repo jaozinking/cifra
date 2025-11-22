@@ -15,7 +15,9 @@ export interface ServerProduct {
   sales: number;
   revenue: number;
   status: string;
-  productFiles: string[];
+  productFiles?: string[]; // Старые файлы PocketBase
+  s3FileKeys?: string[]; // S3 ключи файлов
+  s3CoverImageKey?: string; // S3 ключ обложки
   created: string;
   owner: string;
 }
@@ -42,8 +44,13 @@ export async function getPublicProduct(id: string): Promise<ServerProduct | null
     }
 
     // Build cover image URL if exists
+    // Приоритет: S3, затем PocketBase
     let coverImage = '';
-    if (data.coverImage) {
+    if (data.s3CoverImageKey) {
+      // S3 обложка - используем API route для pre-signed URL
+      coverImage = `/api/files/${encodeURIComponent(data.s3CoverImageKey)}`;
+    } else if (data.coverImage) {
+      // Старая обложка из PocketBase
       coverImage = `${PB_URL}/api/files/${data.collectionId}/${data.id}/${data.coverImage}`;
     }
 
@@ -78,8 +85,13 @@ export async function getPublicProducts(): Promise<ServerProduct[]> {
     
     return (data.items || []).map((item: any) => {
       // Build cover image URL if exists
+      // Приоритет: S3, затем PocketBase
       let coverImage = '';
-      if (item.coverImage) {
+      if (item.s3CoverImageKey) {
+        // S3 обложка - используем API route для pre-signed URL
+        coverImage = `/api/files/${encodeURIComponent(item.s3CoverImageKey)}`;
+      } else if (item.coverImage) {
+        // Старая обложка из PocketBase
         coverImage = `${PB_URL}/api/files/${item.collectionId}/${item.id}/${item.coverImage}`;
       }
 
