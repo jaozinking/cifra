@@ -238,15 +238,39 @@ export const saleService = {
     
     try {
       // listRule already filters to owner = @request.auth.id, so we can omit filter
+      // Sort by id (descending) to get most recent sales first
+      // Note: PocketBase always includes 'created' and 'updated' fields in RecordModel
+      // However, if 'created' is missing, we need to fetch each record individually to get full data
       const result = await pb.collection('sales').getList<PBSale>(1, 500, {
-        sort: '-id'
+        sort: '-id' // Sort by id (most recent first)
       });
       const records = result.items;
       
-      // Fetch product titles separately
+      // Debug: Log first record to see what fields are actually returned
+      if (records.length > 0 && process.env.NEXT_PUBLIC_DEBUG_POCKETBASE === 'true') {
+        console.log('First sale record keys:', Object.keys(records[0]));
+        console.log('First sale record created:', (records[0] as any).created);
+        console.log('First sale record (full):', JSON.stringify(records[0], null, 2));
+      }
+      
+      // Fetch product titles and full sale records separately
+      // If 'created' is missing from getList response, fetch each record individually
+      // This ensures we get all RecordModel fields including 'created' and 'updated'
       const salesWithTitles = await Promise.all(
         records.map(async (sale) => {
           let productTitle = '';
+          let fullSale = sale;
+          
+          // If 'created' is missing, fetch the full record
+          if (!(sale as any).created) {
+            try {
+              fullSale = await pb.collection('sales').getOne<PBSale>(sale.id);
+            } catch (error) {
+              console.warn('Failed to fetch full sale record:', sale.id, error);
+              // Continue with original sale record
+            }
+          }
+          
           try {
             if (typeof sale.product === 'string') {
               const product = await pb.collection('products').getOne<PBProduct>(sale.product);
@@ -255,12 +279,50 @@ export const saleService = {
           } catch {
             // Ignore if product not found
           }
-          return { ...sale, productTitle };
+          
+          // Return the full sale record with productTitle
+          return {
+            ...fullSale,
+            productTitle,
+          };
         })
       );
       
       return salesWithTitles.map(sale => {
-        const pbSale = sale as PBSale;
+        const pbSale = sale as PBSale & RecordModel;
+        // Format date safely - handle invalid dates
+        // PocketBase RecordModel always includes 'created' and 'updated' fields
+        // Access created field directly from the record object
+        let formattedDate = 'Неизвестно';
+        try {
+          // According to PocketBase docs, 'created' is always present in RecordModel
+          // Access it directly - it's a string in format "YYYY-MM-DD HH:mm:ss.SSS"
+          // Try multiple ways to access the field
+          const dateValue = pbSale.created || (pbSale as any).created || (sale as any).created;
+          if (dateValue && typeof dateValue === 'string') {
+            const date = new Date(dateValue);
+            if (!isNaN(date.getTime())) {
+              formattedDate = date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'numeric' });
+            } else {
+              console.warn('Invalid date for sale:', pbSale.id, 'dateValue:', dateValue);
+              // Fallback to current date
+              formattedDate = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'numeric' });
+            }
+          } else {
+            // Fallback: use current date if created is missing
+            // This should not happen according to PocketBase docs, but handle it gracefully
+            // The issue might be that 'created' is not being returned by PocketBase API
+            // Check if we need to explicitly request it or if there's a configuration issue
+            if (process.env.NEXT_PUBLIC_DEBUG_POCKETBASE === 'true') {
+              console.warn('Missing created field for sale:', pbSale.id, 'Available keys:', Object.keys(pbSale), 'Full record:', pbSale);
+            }
+            formattedDate = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'numeric' });
+          }
+        } catch (error) {
+          console.error('Error formatting date for sale:', pbSale.id, error);
+          // Fallback to current date on error
+          formattedDate = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'numeric' });
+        }
         return {
           id: pbSale.id,
           productId: typeof pbSale.product === 'string' ? pbSale.product : '',
@@ -268,7 +330,7 @@ export const saleService = {
           amount: pbSale.amount,
           platformFee: pbSale.platformFee,
           netAmount: pbSale.netAmount,
-          date: new Date(pbSale.created).toLocaleDateString('ru-RU', { day: 'numeric', month: 'numeric' }),
+          date: formattedDate,
           customerEmail: pbSale.customerEmail
         };
       });

@@ -115,15 +115,33 @@ const Dashboard: React.FC<DashboardProps> = ({ onCreateClick, onEditClick, onPro
   const totalSales = products.reduce((acc, p) => acc + p.sales, 0);
   
   // Prepare Sales Chart Data from real sales history
+  // Group sales by date and format for display
   const salesChartData = sales.reduce((acc: any[], sale) => {
+    // sale.date is already formatted as "DD.MM" from pbService
+    // Use it directly for grouping and display
     const existingDay = acc.find(d => d.date === sale.date);
     if (existingDay) {
-        existingDay.amount += sale.netAmount;
+        existingDay.amount = Math.round((existingDay.amount + sale.netAmount) * 100) / 100;
     } else {
-        acc.push({ date: sale.date, amount: sale.netAmount });
+        acc.push({ date: sale.date, amount: Math.round(sale.netAmount * 100) / 100 });
     }
     return acc;
-  }, []).slice(-7); // Last 7 active days
+  }, [])
+  .sort((a, b) => {
+    // Sort by date: parse "DD.MM" format for comparison
+    try {
+      const [dayA, monthA] = a.date.split('.').map(Number);
+      const [dayB, monthB] = b.date.split('.').map(Number);
+      if (isNaN(monthA) || isNaN(dayA) || isNaN(monthB) || isNaN(dayB)) {
+        return 0; // Keep original order if parsing fails
+      }
+      if (monthA !== monthB) return monthA - monthB;
+      return dayA - dayB;
+    } catch {
+      return 0; // Keep original order if parsing fails
+    }
+  })
+  .slice(-7); // Last 7 active days
 
   const handleShare = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
@@ -252,19 +270,22 @@ const Dashboard: React.FC<DashboardProps> = ({ onCreateClick, onEditClick, onPro
                     stroke="#71717a" 
                     fontSize={12} 
                     tickLine={false} 
-                    axisLine={false} 
+                    axisLine={false}
+                    type="category"
                     />
                     <YAxis 
                     stroke="#71717a" 
                     fontSize={12} 
                     tickLine={false} 
                     axisLine={false}
-                    tickFormatter={(value) => `₽${value}`}
+                    tickFormatter={(value) => `₽${value.toLocaleString('ru-RU')}`}
                     />
                     <Tooltip 
                     contentStyle={{ backgroundColor: '#18181b', border: '1px solid #3f3f46', borderRadius: '8px' }}
                     itemStyle={{ color: '#e4e4e7' }}
                     cursor={{fill: '#27272a', opacity: 0.4}}
+                    labelFormatter={(label) => `Дата: ${label}`}
+                    formatter={(value: number) => [`${value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽`, 'Сумма']}
                     />
                     <Bar dataKey="amount" fill="#8b5cf6" radius={[4, 4, 0, 0]} barSize={40} />
                 </BarChart>
