@@ -1,3 +1,21 @@
+/**
+ * StorageService - localStorage fallback для обработки ошибок
+ * 
+ * Этот сервис используется как fallback (резервный вариант) в случае ошибок при работе с PocketBase.
+ * Основной источник данных - PocketBase (через pbService).
+ * 
+ * Fallback используется для graceful degradation (изящной деградации):
+ * - Если PocketBase временно недоступен (сеть, сервер)
+ * - Если произошла ошибка при запросе
+ * - Приложение продолжает работать с данными из localStorage
+ * 
+ * Это стандартная практика для повышения отказоустойчивости приложения.
+ * 
+ * Примечание: В production можно оставить fallback для надежности или убрать,
+ * если требуется строгая консистентность данных только из PocketBase.
+ * 
+ * @deprecated Используйте pbService из './pbService' как основной источник данных
+ */
 
 import { Product, PromoCode, Sale, UserSettings, Payout } from '../types';
 import { MOCK_PRODUCTS, MOCK_PROMOS } from '../constants';

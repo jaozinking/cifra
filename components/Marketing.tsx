@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Tag, Plus, Trash2, Copy } from 'lucide-react';
 import { PromoCode } from '../types';

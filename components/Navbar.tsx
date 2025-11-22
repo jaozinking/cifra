@@ -1,5 +1,9 @@
 
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { LayoutGrid, ShoppingBag, Settings, Search, Percent, User, Users } from 'lucide-react';
 import { ViewState } from '../types';
 

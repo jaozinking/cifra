@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Download, CreditCard, Lock, Loader2, CheckCircle, X, QrCode, Smartphone, FileText, Mail } from 'lucide-react';
@@ -55,10 +56,10 @@ const PublicStore: React.FC<PublicStoreProps> = ({ product, sellerSettings, onCl
   }, [product]);
 
   const handleNavigateToProduct = (id: string) => {
-    const url = new URL(window.location.href);
-    url.searchParams.set('product', id);
-    window.history.pushState({}, '', url.toString());
-    window.location.reload(); 
+    // Use Next.js router if available, otherwise fallback to window.location
+    if (typeof window !== 'undefined') {
+      window.location.href = `/product/${id}`;
+    }
   };
 
   const calculateTotal = () => {

@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
@@ -129,9 +130,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onCreateClick, onEditClick, onPro
         alert('Нельзя поделиться черновиком. Опубликуйте товар, чтобы открыть доступ.');
         return;
     }
-    const url = `${window.location.origin}?product=${product.id}`;
-    navigator.clipboard.writeText(url);
-    alert(`Ссылка на магазин скопирована: ${url}`);
+    const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/product/${product.id}`;
+    if (typeof window !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+      alert(`Ссылка на магазин скопирована: ${url}`);
+    }
   };
 
   // Onboarding Status

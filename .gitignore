@@ -32,9 +32,13 @@ pocketbase.exe
 pocketbase
 pocketbase_*
 
-# Vite
+# Vite (legacy, kept for reference)
 .vite
 .vite-ssg-dist
+
+# Next.js
+.next
+out
 
 # Testing
 coverage

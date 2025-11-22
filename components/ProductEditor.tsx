@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Sparkles, Upload, Save, Loader2, Image as ImageIcon, RefreshCcw, Eye, EyeOff, AlertTriangle } from 'lucide-react';

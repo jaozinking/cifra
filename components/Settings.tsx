@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { User, Shield, Wallet, Save, Check, Clock, ArrowUpRight, Bell, Mail, AlertCircle, Trash2 } from 'lucide-react';

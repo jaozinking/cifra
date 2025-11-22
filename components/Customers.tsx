@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Download, Mail, Search, TrendingUp } from 'lucide-react';
 import { Sale } from '../types';
